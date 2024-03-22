@@ -165,7 +165,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_submit -> {
-                // TODO "implement btn submit"
+                // TODO "implement btn submit":q!
+
             }
         }
     }
