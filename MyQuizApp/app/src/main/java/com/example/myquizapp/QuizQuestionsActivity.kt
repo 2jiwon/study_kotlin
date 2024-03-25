@@ -170,4 +170,22 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
+    // 선택한 옵션의 배경색을 지정하는 부분(정답인지 아닌지에 따라)
+    private fun answerview(answer: Int, drawbleView: Int) {
+        when(answer) {
+            1 -> {
+                tvOptionOne?.background = ContextCompat.getDrawable(this, drawbleView)
+            }
+            2 -> {
+                tvOptionTwo?.background = ContextCompat.getDrawable(this, drawbleView)
+            }
+            3 -> {
+                tvOptionThree?.background = ContextCompat.getDrawable(this, drawbleView)
+            }
+            4 -> {
+                tvOptionFour?.background = ContextCompat.getDrawable(this, drawbleView)
+            }
+        }
+    }
 }
