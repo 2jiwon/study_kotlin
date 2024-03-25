@@ -57,6 +57,10 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionFour = findViewById(R.id.tv_option_four)
 
         btnSubmit = findViewById(R.id.btn_submit)
+        // 질문들 가져오기
+        mQuestionsList = Constants.getQuestions()
+
+        setQuestion()
 
         // 각 옵션을 클릭 가능하게 만드는 부분
         tvOptionOne?.setOnClickListener(this)
@@ -65,15 +69,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionFour?.setOnClickListener(this)
         // 제출 버튼 클릭
         btnSubmit?.setOnClickListener(this)
-
-        // 질문들 가져오기
-        mQuestionsList = Constants.getQuestions()
-
-        setQuestion()
-
     }
 
     private fun setQuestion() {
+        // 모든 옵션을 리셋하기
+        defaultOptionsView()
 
         // 현재 위치를 이동하면서 질문을 가져올 수 있도록 (index 0 대신 1을 쓰는 이유는 텍스트 표시를 쉽게 하기 위함임)
         var question: Question = mQuestionsList!![mCurrentPosition - 1]
@@ -164,27 +164,55 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
+            // 제출 버튼을 눌렀을 때는 선택한 옵션 위치를 리셋하고 다음 퀴즈로 넘어가야 한다.
             R.id.btn_submit -> {
-                // TODO "implement btn submit":q!
+                // 선택한 옵션이 0이면
+                if (mSelectedOptionPosition == 0) { // 0가 기본값이기 때문에 0과 비교하는 것임
+                    mCurrentPosition++
+
+                    // 질문이 남아있다면 다음으로 이동
+                    when{
+                        mCurrentPosition <= mQuestionsList!!.size -> {
+                            setQuestion()
+                        }
+                    }
+                } else { // 옵션이 0이 아니라면 옵션을 선택한 것이니 정답을 체크
+                    val question = mQuestionsList?.get(mCurrentPosition - 1)
+                    // 선택한 옵션과 정답이 일치하지 않은 경우
+                    if (question!!.correctAnswer != mSelectedOptionPosition) {
+                         answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
+                    }
+                    // 기본적으로는 정답을 표시
+                    answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
+
+                    // 마지막 질문이 아니라면 다음 질문으로 넘어가도록
+                    if (mCurrentPosition == mQuestionsList!!.size) {
+                        btnSubmit?.text = "FINISH"
+                    } else {
+                        btnSubmit?.text = "Go To Next Question"
+                    }
+                    // 선택했던 옵션은 리셋
+                    mSelectedOptionPosition = 0
+                }
 
             }
         }
     }
 
     // 선택한 옵션의 배경색을 지정하는 부분(정답인지 아닌지에 따라)
-    private fun answerview(answer: Int, drawbleView: Int) {
+    private fun answerView(answer: Int, drawableView: Int) {
         when(answer) {
             1 -> {
-                tvOptionOne?.background = ContextCompat.getDrawable(this, drawbleView)
+                tvOptionOne?.background = ContextCompat.getDrawable(this, drawableView)
             }
             2 -> {
-                tvOptionTwo?.background = ContextCompat.getDrawable(this, drawbleView)
+                tvOptionTwo?.background = ContextCompat.getDrawable(this, drawableView)
             }
             3 -> {
-                tvOptionThree?.background = ContextCompat.getDrawable(this, drawbleView)
+                tvOptionThree?.background = ContextCompat.getDrawable(this, drawableView)
             }
             4 -> {
-                tvOptionFour?.background = ContextCompat.getDrawable(this, drawbleView)
+                tvOptionFour?.background = ContextCompat.getDrawable(this, drawableView)
             }
         }
     }
