@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import org.w3c.dom.Text
 import java.lang.reflect.Type
@@ -72,11 +73,12 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setQuestion() {
+        // 현재 위치를 이동하면서 질문을 가져올 수 있도록 (index 0 대신 1을 쓰는 이유는 텍스트 표시를 쉽게 하기 위함임)
+        var question: Question = mQuestionsList!![mCurrentPosition - 1]
+
         // 모든 옵션을 리셋하기
         defaultOptionsView()
 
-        // 현재 위치를 이동하면서 질문을 가져올 수 있도록 (index 0 대신 1을 쓰는 이유는 텍스트 표시를 쉽게 하기 위함임)
-        var question: Question = mQuestionsList!![mCurrentPosition - 1]
         // 진행상태 나타내는 바
         progressBar?.progress = mCurrentPosition
         // 옆의 텍스트
@@ -166,6 +168,9 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
             // 제출 버튼을 눌렀을 때는 선택한 옵션 위치를 리셋하고 다음 퀴즈로 넘어가야 한다.
             R.id.btn_submit -> {
+                Log.i("mCurrentPosition", mCurrentPosition.toString())
+                Log.i("mSelectedOptionPosition", mSelectedOptionPosition.toString())
+
                 // 선택한 옵션이 0이면
                 if (mSelectedOptionPosition == 0) { // 0가 기본값이기 때문에 0과 비교하는 것임
                     mCurrentPosition++
@@ -174,6 +179,10 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                     when{
                         mCurrentPosition <= mQuestionsList!!.size -> {
                             setQuestion()
+                        }
+                        // 질문이 더 없다면
+                        else -> {
+                            Toast.makeText(this, "Congratulation! You made it to the end!", Toast.LENGTH_SHORT)
                         }
                     }
                 } else { // 옵션이 0이 아니라면 옵션을 선택한 것이니 정답을 체크
