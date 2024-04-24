@@ -1,5 +1,6 @@
 package com.example.myquizapp
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -42,10 +43,17 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     // Submit 버튼
     private var btnSubmit : Button? = null
 
+    // 메인 액티비티에서 넘긴 값들을 받기 위한 변수들
+    private var mUserName: String? = null
+    private var mCorrectAnswers: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
+
+        // 현재 액티비티에 USER_NAME의 위치에서 세부 사항을 가져온다
+        mUserName = intent.getStringExtra(Constants.USER_NAME)
+
 
         // UI와 연결
         progressBar = findViewById(R.id.progressBar)
@@ -180,9 +188,20 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                         mCurrentPosition <= mQuestionsList!!.size -> {
                             setQuestion()
                         }
-                        // 질문이 더 없다면
+                        // 질문이 더 없다면 -> 끝까지 다 왔다면
                         else -> {
-                            Toast.makeText(this, "Congratulation! You made it to the end!", Toast.LENGTH_SHORT)
+                            // Toast.makeText(this, "Congratulation! You made it to the end!", Toast.LENGTH_SHORT)
+
+                            // 이제 필요한 변수들을 result 액티비티로 넘기기
+                            val intent = Intent(this, ResultActivity::class.java)
+                            intent.putExtra(Constants.USER_NAME, mUserName)
+                            intent.putExtra(Constants.CORRECT_ANSWERS, mCorrectAnswers)
+                            intent.putExtra(Constants.TOTAL_QUESTIONS, mQuestionsList?.size)
+
+                            // 위에서 만든 intent로 액티비티를 시작
+                            startActivity(intent)
+                            // 액티비티 종료
+                            finish()
                         }
                     }
                 } else { // 옵션이 0이 아니라면 옵션을 선택한 것이니 정답을 체크
@@ -190,6 +209,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                     // 선택한 옵션과 정답이 일치하지 않은 경우
                     if (question!!.correctAnswer != mSelectedOptionPosition) {
                          answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
+                    } else { // 정답인 경우
+                        mCorrectAnswers++
                     }
                     // 기본적으로는 정답을 표시
                     answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
