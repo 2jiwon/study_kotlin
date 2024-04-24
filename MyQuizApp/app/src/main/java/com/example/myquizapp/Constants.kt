@@ -1,6 +1,15 @@
 package com.example.myquizapp
 
 object Constants {
+
+    // 변수 이름에 글자가 1개 이상 사용될 경우, 대문자와 _ 를 사용하는게 일반적인 방식임
+    // 사용자 이름을 저장할 변수
+    const val USER_NAME: String = "user_name"
+    // 문제가 몇 개인지
+    const val TOTAL_QUESTIONS: String = "total_questions"
+    // 정답을 몇 개 맞췄는지
+    const val CORRECT_ANSWERS: String = "correct_answers"
+
     // 질문 목록을 받아오는 함수. 이것을 Main에서 사용하면 질문들을 표시할 수 있음
     fun getQuestions(): ArrayList<Question> {
         // 원래는 질문들을 xml 파일 등 리소스에 놓고 거기에서 가져다가 쓰는 것이 정석이나 일단은 하드코딩해서 사용
