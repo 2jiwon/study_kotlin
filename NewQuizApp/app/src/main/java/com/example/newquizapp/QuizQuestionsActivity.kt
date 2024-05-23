@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
-
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     // 진행바
@@ -164,7 +163,13 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                             setQuestion()
                         } else -> { // 질문이 더이상 없다면
                         // 일단 Toast 띄움
-//                            Toast.makeText(this, "축하합니다. 퀴즈를 끝까지 풀었습니다.", Toast.LENGTH_SHORT).show()
+                            // Toast.makeText(this, "축하합니다. 퀴즈를 끝까지 풀었습니다.", Toast.LENGTH_SHORT).show()
+                        /**
+                         * Toast로 테스트하다보니 Package has already queued 5 toasts. not showing more. 라고 에러가 발생했고, 이 에러에서 빠져나올 수 없었다.
+                         * 알고보니 Android 12에서 Toast를 5개로 제한한다고...(이걸 통해 공격이 가능하기 때문)
+                         * 내가 계속 같은 동작을 해서, 그게 연속 토스트로 인식되는 모양이다.
+                         * 그러면 토스트를 다른걸로 대체해야 하는건지, 아니면 하나 띄운걸 취소하고 다시 띄우는 식으로 하면 되는지 알아봐야겠다.
+                         */
 
                         val intent = Intent(this, ResultActivity::class.java)
                         intent.putExtra(Constants.USER_NAME, mUserName)
@@ -184,7 +189,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
                     // 선택한 옵션과 정답이 일치하지 않은 경우
                     if (question!!.correctAnswer != mSelectedOptionPosition) {
-//                            Toast.makeText(this, "오답입니다.", Toast.LENGTH_SHORT).show()
+                        Helper().makeToast(this, "오답입니다.")
                         answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
                     } else { // 정답인 경우
 //                        Toast.makeText(this, "정답입니다.", Toast.LENGTH_SHORT).show()
