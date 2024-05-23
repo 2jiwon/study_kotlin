@@ -189,6 +189,9 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
                     // 선택한 옵션과 정답이 일치하지 않은 경우
                     if (question!!.correctAnswer != mSelectedOptionPosition) {
+                        /**
+                         * 메서드로 만들어서 띄워도 같은 에러 메시지 나온다. 다만 아직 앱이 crash되지는 않음.
+                         */
                         Helper().makeToast(this, "오답입니다.")
                         answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
                     } else { // 정답인 경우
