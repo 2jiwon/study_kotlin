@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 나눔바른고딕-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumbarungothic" />
+
+    <!-- 나눔바른고딕 Bold-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumbarungothic_bold" />
+
+    <!-- 나눔바른고딕 Light-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumbarungothic_light" />
+
+    <!-- 나눔바른고딕 UltraLight-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumbarungothic_ultralight" />
+
+    <!-- 마루부리-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/maruburi_regular" />
+
+    <!-- 마루부리 Bold-->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/maruburi_bold" />
+
+</font-family>
