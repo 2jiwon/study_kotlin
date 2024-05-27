@@ -54,6 +54,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     // 답을 맞추려고 시도한 수
     private var trial = 0
+
+
+    // TODO :: 옵션 선택을 안하고 확인을 눌러도 다음문제로 넘어가지는 문제 해결하기
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
@@ -108,11 +113,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionThree?.text = question.optionThree
         tvOptionFour?.text = question.optionFour
 
-        if (mCurrentPosition == mQuestionList!!.size) {
-            btnSubmit?.text = "내 점수 확인"
-        } else {
+//        if (mCurrentPosition == mQuestionList!!.size) {
+//            btnSubmit?.text = "내 점수 확인2"
+//        } else {
             btnSubmit?.text = "확인"
-        }
+//        }
     }
 
     // 옵션들의 디폴트 뷰를 설정하는 메서드
@@ -148,7 +153,6 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     // 선택 옵션을 클릭(터치)했을 때
     override fun onClick(view: View?) {
-
 
         // 클릭된 view 요소에 따라 메서드 실행
         when (view?.id) {
