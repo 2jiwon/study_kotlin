@@ -2,11 +2,8 @@ package com.example.newquizapp
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatDrawableManager.get
 import com.opencsv.CSVReaderHeaderAware
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
 
 
@@ -31,7 +28,7 @@ object Constants {
 
         for ((index, nextRecord) in reader.withIndex()) {
 
-            Log.i("index :::::", index.toString())
+//            Log.i("index :::::", index.toString())
 
 //            if (reader.readNext() != null) {  // 이렇게 했더니 데이터를 못읽고 넘어가버리는 현상이 발생함...
                 val quiz = Question(

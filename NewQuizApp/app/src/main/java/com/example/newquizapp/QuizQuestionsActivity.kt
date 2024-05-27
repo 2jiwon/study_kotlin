@@ -87,8 +87,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionTwo?.setOnClickListener(this)
         tvOptionThree?.setOnClickListener(this)
         tvOptionFour?.setOnClickListener(this)
-        // 제출 버튼 클릭
-        btnSubmit?.setOnClickListener(this)
+
+//        if (mSelectedOptionPosition > 0) {
+            // 제출 버튼 클릭
+            btnSubmit?.setOnClickListener(this)
+//        }
     }
 
     private fun setQuestion() {
@@ -116,12 +119,13 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 //        if (mCurrentPosition == mQuestionList!!.size) {
 //            btnSubmit?.text = "내 점수 확인2"
 //        } else {
-            btnSubmit?.text = "확인"
+            btnSubmit?.text = "확인2"
 //        }
     }
 
     // 옵션들의 디폴트 뷰를 설정하는 메서드
     private fun defaultOptionsView() {
+
         val options = ArrayList<TextView>()
         // tvOptionOne,Two...를 options 배열에 넣기
         tvOptionOne?.let { options.add(it) }
@@ -174,13 +178,52 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
             // 제출 버튼을 눌렀을 때
             R.id.btn_submit -> {
-                Log.i("mCurrentPosition", mCurrentPosition.toString())
-                Log.i("mSelectedOptionPosition", mSelectedOptionPosition.toString())
 
-                // 아직 선택옵션 위치가 기본값이면
-                if (mSelectedOptionPosition == 0) {
-                    // 위치를 1증가
-                    mCurrentPosition++
+                Log.d("trial1 :::::::::: ", trial.toString())
+                Log.i("mCurrentPosition ::: ", mCurrentPosition.toString())
+                Log.i("mSelectedOptionPosition ::: ", mSelectedOptionPosition.toString())
+
+                // 아직 선택옵션 위치가 기본값이면 아무 옵션을 선택하지 않은 것
+
+                // 선택옵션 위치가 0이 아니면 옵션을 선택한 것이니 정답 체크
+                if (mSelectedOptionPosition > 0) {
+
+                    val question = mQuestionList?.get(mCurrentPosition - 1)
+
+                    // 선택한 옵션과 정답이 일치하지 않은 경우
+                    if (question!!.correctAnswer != mSelectedOptionPosition) {
+                        /**
+                         * 메서드로 만들어서 띄워도 같은 에러 메시지 나온다. 다만 아직 앱이 crash되지는 않음.
+                         */
+//                      Helper().makeToast(this, "오답입니다.")
+                        trial++
+
+                        // 2번까지 다시 지정 가능하게
+                        AlertDialog.Builder(this).run {
+                            setMessage("오답입니다.")
+                            setPositiveButton("OK", null)
+                            show()
+                        }
+                        answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
+                        btnSubmit?.text = "확인1"
+                        mSelectedOptionPosition = 0
+
+                    } else { // 정답인 경우
+//                        Toast.makeText(this, "정답입니다.", Toast.LENGTH_SHORT).show()
+                        mCorrectAnswers++
+                        answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
+                        checkAnswer()
+                    }
+
+                    Log.d("trial2 :::::::::: ", trial.toString())
+
+                    // 2번 오답 체크시 정답 보여줌
+                    if (trial >= 2) {
+                        answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
+                        checkAnswer()
+                    }
+
+                } else {
 
                     // 질문이 아직 남아있다면 다음 질문으로 이동
                     when {
@@ -209,38 +252,6 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                             finish()
                         }
                     }
-                } else {
-                    // 선택옵션 위치가 0이 아니면 옵션을 선택한 것이니 정답 체크
-                    val question = mQuestionList?.get(mCurrentPosition - 1)
-
-                    // 선택한 옵션과 정답이 일치하지 않은 경우
-
-                    if (question!!.correctAnswer != mSelectedOptionPosition) {
-                        /**
-                         * 메서드로 만들어서 띄워도 같은 에러 메시지 나온다. 다만 아직 앱이 crash되지는 않음.
-                         */
-//                        Helper().makeToast(this, "오답입니다.")
-
-                        // 2번까지 다시 지정 가능하게
-                        AlertDialog.Builder(this).run {
-                            setMessage("오답입니다.")
-                            setPositiveButton("OK", null)
-                            show()
-                        }
-                        defaultOptionsView()
-                        btnSubmit?.text = "확인"
-                        trial++
-
-                    } else { // 정답인 경우
-//                        Toast.makeText(this, "정답입니다.", Toast.LENGTH_SHORT).show()
-                        mCorrectAnswers++
-                        answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
-                    }
-
-//                    Log.d("trial :::::::::: ", trial.toString())
-
-                    if (trial >= 2 || trial == 0) answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
-
                 }
             }
         }
@@ -264,7 +275,9 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                 tvOptionFour?.background = ContextCompat.getDrawable(this, drawableView)
             }
         }
+    }
 
+    private fun checkAnswer() {
         // 마지막 질문이 아니라면 다음 질문으로 넘어가도록
         if (mCurrentPosition == mQuestionList!!.size) {
             btnSubmit?.text = "내 점수 확인"
@@ -272,9 +285,13 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             btnSubmit?.text = "다음 문제로"
         }
 
+        // 선택한 옵션값 초기화
         mSelectedOptionPosition = 0
-        // 몇번 시도했는지
+        // 몇번 시도했는지 초기화
         trial = 0
+
+        // 답을 보여줬기 때문에 위치를 1증가
+        mCurrentPosition++
     }
 }
 
