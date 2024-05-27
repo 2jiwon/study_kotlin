@@ -55,9 +55,9 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     // 답을 맞추려고 시도한 수
     private var trial = 0
 
+    // TODO :: 질문과 선택 옵션을 소리로 들을 수 있게 하기
 
-    // TODO :: 옵션 선택을 안하고 확인을 눌러도 다음문제로 넘어가지는 문제 해결하기
-
+    // TODO :: 옵션 선택을 안하고 확인을 눌러도 다음문제로 넘어가지는 문제 해결하기 -> 완료
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
