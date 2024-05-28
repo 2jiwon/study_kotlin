@@ -3,16 +3,16 @@ package com.example.newquizapp
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import java.util.*
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -24,6 +24,9 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     // 질문
     private var tvQuestion: TextView? = null
+
+    // 오디오 버튼
+    private var btnAudio: ImageButton? = null
 
     // 이미지
     private var ivImage: ImageView? = null
@@ -59,9 +62,15 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     // TODO :: 옵션 선택을 안하고 확인을 눌러도 다음문제로 넘어가지는 문제 해결하기 -> 완료
 
+    var tts: TextToSpeech? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
+
+//        Helper().initTextToSpeech(this)
+
+        initTextToSpeech()
 
         mUserName = intent.getStringExtra(Constants.USER_NAME)
 
@@ -76,11 +85,15 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionFour = findViewById(R.id.tv_option_four)
 
         btnSubmit = findViewById(R.id.btn_submit)
+        btnAudio = findViewById(R.id.btn_audio)
 
         // 질문 리스트 가져오기
         mQuestionList = Constants.getQuestions(this)
 
         setQuestion()
+
+        btnAudio?.setOnClickListener(this)
+//            ttsSpeak("소리가 나옵니다.")
 
         // 각 옵션들을 클릭 가능하도록 만들기
         tvOptionOne?.setOnClickListener(this)
@@ -92,6 +105,31 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             // 제출 버튼 클릭
             btnSubmit?.setOnClickListener(this)
 //        }
+    }
+
+    fun initTextToSpeech() {
+        // 롤리팝(API 21, Android 5.0)이상에서만 지원됨
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Toast.makeText(this, "지원하지 않는 SDK 버전입니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        tts = TextToSpeech(this) {
+            if (it == TextToSpeech.SUCCESS) {
+                val result = tts?.setLanguage(Locale.KOREAN)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Toast.makeText(this, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show()
+//                    return@TextToSpeech
+                }
+                Toast.makeText(this, "TTS 설정 성공", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "TTS 설정 실패", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun ttsSpeak(str: String) {
+        tts?.speak(str, TextToSpeech.QUEUE_ADD, null, "")
     }
 
     private fun setQuestion() {
@@ -160,6 +198,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
         // 클릭된 view 요소에 따라 메서드 실행
         when (view?.id) {
+            R.id.btn_audio -> {
+                val question = mQuestionList?.get(mCurrentPosition - 1)
+                question?.let { ttsSpeak(question.question) }
+            }
+
             R.id.tv_option_one -> {
                 tvOptionOne?.let { selectedOptionView(it, 1) }
             }
