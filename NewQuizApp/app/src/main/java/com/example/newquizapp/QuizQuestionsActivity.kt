@@ -68,7 +68,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
 
-//        Helper().initTextToSpeech(this)
+//        tts = Helper().initTextToSpeech(this)
 
         initTextToSpeech()
 
@@ -200,7 +200,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         when (view?.id) {
             R.id.btn_audio -> {
                 val question = mQuestionList?.get(mCurrentPosition - 1)
-                question?.let { ttsSpeak(question.question) }
+                question?.let {ttsSpeak(question.question) } //Helper().ttsSpeak(question.question) }
             }
 
             R.id.tv_option_one -> {

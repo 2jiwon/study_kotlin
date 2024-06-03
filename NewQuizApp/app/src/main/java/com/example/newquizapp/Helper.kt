@@ -18,11 +18,11 @@ class Helper {
 
     private var tts: TextToSpeech? = null
 
-    fun initTextToSpeech(context: Context) {
+    fun initTextToSpeech(context: Context): TextToSpeech? {
         // 롤리팝(API 21, Android 5.0)이상에서만 지원됨
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Toast.makeText(context, "지원하지 않는 SDK 버전입니다.", Toast.LENGTH_SHORT).show()
-            return
+            return null
         }
 
         tts = TextToSpeech(context) {
@@ -37,6 +37,8 @@ class Helper {
                 Toast.makeText(context, "TTS 설정 실패", Toast.LENGTH_SHORT).show()
             }
         }
+
+        return tts as TextToSpeech
     }
 
     fun ttsSpeak(str: String) {
