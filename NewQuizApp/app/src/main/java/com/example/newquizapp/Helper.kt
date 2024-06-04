@@ -16,7 +16,7 @@ class Helper {
         toast!!.show()
     }
 
-    private var tts: TextToSpeech? = null
+    var tts: TextToSpeech? = null
 
     fun initTextToSpeech(context: Context): TextToSpeech? {
         // 롤리팝(API 21, Android 5.0)이상에서만 지원됨
@@ -41,7 +41,7 @@ class Helper {
         return tts as TextToSpeech
     }
 
-    fun ttsSpeak(str: String) {
+    fun ttsSpeak(tts: TextToSpeech?, str: String) {
         tts?.speak(str, TextToSpeech.QUEUE_FLUSH, null, "")
     }
 }

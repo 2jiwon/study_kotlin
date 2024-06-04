@@ -3,7 +3,6 @@ package com.example.newquizapp
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.util.Log
@@ -12,7 +11,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import java.util.*
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -62,15 +60,13 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     // TODO :: 옵션 선택을 안하고 확인을 눌러도 다음문제로 넘어가지는 문제 해결하기 -> 완료
 
-    var tts: TextToSpeech? = null
+    private var tts: TextToSpeech? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
 
-//        tts = Helper().initTextToSpeech(this)
-
-        initTextToSpeech()
+        tts = Helper().initTextToSpeech(this)
 
         mUserName = intent.getStringExtra(Constants.USER_NAME)
 
@@ -93,7 +89,6 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         setQuestion()
 
         btnAudio?.setOnClickListener(this)
-//            ttsSpeak("소리가 나옵니다.")
 
         // 각 옵션들을 클릭 가능하도록 만들기
         tvOptionOne?.setOnClickListener(this)
@@ -105,31 +100,6 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             // 제출 버튼 클릭
             btnSubmit?.setOnClickListener(this)
 //        }
-    }
-
-    fun initTextToSpeech() {
-        // 롤리팝(API 21, Android 5.0)이상에서만 지원됨
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Toast.makeText(this, "지원하지 않는 SDK 버전입니다.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        tts = TextToSpeech(this) {
-            if (it == TextToSpeech.SUCCESS) {
-                val result = tts?.setLanguage(Locale.KOREAN)
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Toast.makeText(this, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show()
-//                    return@TextToSpeech
-                }
-                Toast.makeText(this, "TTS 설정 성공", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "TTS 설정 실패", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    fun ttsSpeak(str: String) {
-        tts?.speak(str, TextToSpeech.QUEUE_ADD, null, "")
     }
 
     private fun setQuestion() {
@@ -200,7 +170,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         when (view?.id) {
             R.id.btn_audio -> {
                 val question = mQuestionList?.get(mCurrentPosition - 1)
-                question?.let {ttsSpeak(question.question) } //Helper().ttsSpeak(question.question) }
+                question?.let { Helper().ttsSpeak(tts, question.question) }
             }
 
             R.id.tv_option_one -> {
@@ -235,9 +205,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
                     // 선택한 옵션과 정답이 일치하지 않은 경우
                     if (question!!.correctAnswer != mSelectedOptionPosition) {
-                        /**
-                         * 메서드로 만들어서 띄워도 같은 에러 메시지 나온다. 다만 아직 앱이 crash되지는 않음.
-                         */
+                        // 메서드로 만들어서 띄워도 같은 에러 메시지 나온다. 다만 아직 앱이 crash되지는 않음.
 //                      Helper().makeToast(this, "오답입니다.")
                         trial++
 
