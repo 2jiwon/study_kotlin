@@ -3,6 +3,7 @@ package com.fancytank.kidsdrawingapp
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 
@@ -48,7 +49,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
         mCanvasPaint = Paint(Paint.DITHER_FLAG)
         // brush size 지정
-        mBrushSize = 20.toFloat()
+        //mBrushSize = 20.toFloat() <-- 임시로 지정한 값이라서 삭제하면 된다.
     }
 
     // 이 안의 내용은 화면 크기가 바뀔때마다 불러오게 된다.
@@ -127,6 +128,17 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
             canvas.drawPath(mDrawPath!!, mDrawPaint!!)
         }
     }
+
+    // brush 크기를 설정하기
+    fun setSizeForBrush(newSize: Float) {
+        // brush size를 아무 float 값이나 줄 수 없다. 그래서 아래의 메서드를 이용하는 것임.
+        // 결국 여기서 하는 것은, 화면 측정 단위에 따라서 브러시 크기가 조정되도록 하는 것임.
+        // (예를 들어, 작은 스크린에서 손가락 만한 굵기로 그렸다면 큰 스크린에서도 같은 비율로 굵게 보여야 하는 것)
+        mBrushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, resources.displayMetrics) // unit: 사용할 단위, value: 정보값, metrics: 측정 기준
+
+        mDrawPaint!!.strokeWidth = mBrushSize
+    }
+
 
     // 중첩된 class면서 internal inner class로 생성
     // internal inner class는 이 class 안에서만 사용하고, 변수를 가져오거나 내보낼 수 있다.
