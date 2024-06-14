@@ -21,6 +21,11 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     // 그림을 그릴 배경이 되는 캔버스
     private var canvas: Canvas? = null
 
+    // path를 유지하기 위한 부분(-> 그림을 활동주기 동안 유지하게 하기 위한 부분)
+    /* val로 ArrayList를 만들면, ArrayList 안의 요소는 변경가능하지만 새로운 ArrayList를 만들 수는 없다. */
+    private val mPaths = ArrayList<CustomPath>()
+
+
     // 변수들의 초기화를 위한 부분
     init {
         // 메서드에서 처리
@@ -86,6 +91,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
                 }
             }
             MotionEvent.ACTION_UP -> {
+                mPaths.add(mDrawPath!!) // path를 저장(?)
                 mDrawPath = CustomPath(color, mBrushSize)
             }
             else -> return false
@@ -103,6 +109,13 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
         // drawBitmap을 불러와서 전달, mCanvasBitmap을 사용하고 싶다고 하는 것. 시작할 위치는 왼쪽 위가 됨.
         canvas.drawBitmap(mCanvasBitmap!!, 0f, 0f, mCanvasPaint)
+
+        // 그림을 그리는 부분
+        for (path in mPaths) {
+            mDrawPaint!!.strokeWidth = path.brushThickness
+            mDrawPaint!!.color = path.color
+            canvas.drawPath(path, mDrawPaint!!)
+        }
 
         // path를 그리는 부분
         // mDrawPath가 비어있을 때(즉, 아무것도 그리지 않았을 때) 뭔가를 그리게 한다.
