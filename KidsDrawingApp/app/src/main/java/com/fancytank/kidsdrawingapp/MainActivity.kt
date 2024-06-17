@@ -5,8 +5,10 @@ import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Im
+import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 
@@ -81,5 +83,11 @@ class MainActivity : AppCompatActivity() {
         }
         /* 여기에서 사용자가 좌우로 드래그해서 크기를 변경시킬 수 있는 방식으로 업그레이드해보기 */
         brushDialog.show()
+    }
+
+    // 색상 버튼이 클릭되었을 때 동작할 메서드
+    fun paintClicked(view: View) {
+        // 테스트를 위해 토스트를 먼저 띄워본다
+//        Toast.makeText(this, "clicked paint", Toast.LENGTH_LONG).show()
     }
 }

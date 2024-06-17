@@ -139,6 +139,14 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         mDrawPaint!!.strokeWidth = mBrushSize
     }
 
+    // 선택한 색상이 적용되도록 하기
+    fun setColor(newColor: String) {
+        // 이 파일의 윗 부분에서 설정한 color를 override함
+        color = Color.parseColor(newColor)
+        mDrawPaint!!.color = color
+    }
+
+
 
     // 중첩된 class면서 internal inner class로 생성
     // internal inner class는 이 class 안에서만 사용하고, 변수를 가져오거나 내보낼 수 있다.
