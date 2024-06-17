@@ -4,12 +4,18 @@ import android.app.Dialog
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Im
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 
 class MainActivity : AppCompatActivity() {
 
     // 드로잉뷰
     private var drawingView: DrawingView? = null
+    // 색상 팔레트 버튼
+    private var mImageButtonCurrentPaint: ImageButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +25,18 @@ class MainActivity : AppCompatActivity() {
         drawingView = findViewById(R.id.drawing_view)
         // brush size 지정하기
         drawingView?.setSizeForBrush(20.toFloat())
+
+        // 색상 팔레트 버튼이 담긴 선형 레이아웃
+        /**
+         * 선형 레이아웃 안에 담긴 버튼 하나하나는 id를 가지고 있지 않다. 그 대신 이 선형 레이아웃 안에서 인덱스를 가지고 이 버튼들을 불러오기 위해 이렇게 사용한다.
+         */
+        val linearLayoutPaintColors = findViewById<LinearLayout>(R.id.ll_paint_colors)
+        // 위의 선형 레이아웃의 1번 위치에 있는 버튼을 가져와서 할당
+        mImageButtonCurrentPaint = linearLayoutPaintColors[1] as ImageButton
+        mImageButtonCurrentPaint!!.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.pallet_selected)
+        )
+
 
         // 만든 이미지 버튼 활용
         val ibBrush: ImageButton = findViewById(R.id.ib_brush)
