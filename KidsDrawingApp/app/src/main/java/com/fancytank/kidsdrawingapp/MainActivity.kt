@@ -89,5 +89,20 @@ class MainActivity : AppCompatActivity() {
     fun paintClicked(view: View) {
         // 테스트를 위해 토스트를 먼저 띄워본다
 //        Toast.makeText(this, "clicked paint", Toast.LENGTH_LONG).show()
+
+        // 다른 버튼을 눌렀을때 색상이 바뀌는지 체크하기
+        if (view !== mImageButtonCurrentPaint) {
+            val imageButton = view as ImageButton
+            // 이미지버튼의 tag속성을 가져와서 문자열로 만들고 그 값을 저장
+            val colorTag = imageButton.tag.toString()
+            // setColor 메서드를 사용해서 색상 태그 전달하기
+            drawingView?.setColor(colorTag)
+            // 선택한 이미지로 실행되도록
+            imageButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pallet_selected))
+            // 선택하지 않은 버튼들은 기본 이미지로 표시되도록
+            mImageButtonCurrentPaint?.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pallet_normal))
+            // 변경한 정보값을 저장하기 -> view로 재정의해서 현재 선택한 버튼을 다시 사용할 수 있게... (잘 이해가 안됨ㅠ)
+            mImageButtonCurrentPaint = view
+        }
     }
 }
