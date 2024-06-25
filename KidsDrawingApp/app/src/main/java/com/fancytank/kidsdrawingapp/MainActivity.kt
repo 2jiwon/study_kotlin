@@ -1,16 +1,18 @@
 package com.fancytank.kidsdrawingapp
 
 import android.app.Dialog
-import android.media.Image
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import com.github.dhaval2404.colorpicker.ColorPickerDialog
+import com.github.dhaval2404.colorpicker.model.ColorShape
+import com.github.dhaval2404.colorpicker.util.ColorUtil.parseColor
 
 class MainActivity : AppCompatActivity() {
 
@@ -104,5 +106,29 @@ class MainActivity : AppCompatActivity() {
             // 변경한 정보값을 저장하기 -> view로 재정의해서 현재 선택한 버튼을 다시 사용할 수 있게... (잘 이해가 안됨ㅠ)
             mImageButtonCurrentPaint = view
         }
+    }
+
+    fun colorPickerClicked(view: View) {
+//        Toast.makeText(this, "picker clicked", Toast.LENGTH_SHORT).show()
+
+        ColorPickerDialog
+            .Builder(this)        				// Pass Activity Instance
+            .setTitle("Pick Theme")           	// Default "Choose Color"
+            .setColorShape(ColorShape.SQAURE)   // Default ColorShape.CIRCLE
+            .setDefaultColor(parseColor("#ffffff"))     // Pass Default Color
+            .setColorListener { color, colorHex ->
+                // Handle Color Selection
+//                Toast.makeText(this, "color picked", Toast.LENGTH_SHORT).show()
+                val imageButton = view as ImageButton
+                drawingView?.setColor(colorHex) // 그림그리는 색상 변경
+                if (view !== mImageButtonCurrentPaint) {
+                    imageButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pallet_selected))
+                    imageButton.setBackgroundColor(color)
+
+                    mImageButtonCurrentPaint?.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pallet_normal))
+                    mImageButtonCurrentPaint = view
+                }
+            }
+            .show()
     }
 }
