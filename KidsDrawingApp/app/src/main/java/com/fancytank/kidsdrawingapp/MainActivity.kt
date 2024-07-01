@@ -108,6 +108,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 컬러피커 추가한 부분
     fun colorPickerClicked(view: View) {
 //        Toast.makeText(this, "picker clicked", Toast.LENGTH_SHORT).show()
 
