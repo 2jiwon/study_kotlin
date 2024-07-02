@@ -1,13 +1,17 @@
 package com.fancytank.kidsdrawingapp
 
+import android.Manifest
 import android.app.Dialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
@@ -20,6 +24,24 @@ class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView? = null
     // 색상 팔레트 버튼
     private var mImageButtonCurrentPaint: ImageButton? = null
+
+    // 여러개의 권한을 요청할 수 있게 하기 위한 부분
+    val requestPermission: ActivityResultLauncher<Array<String>> = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        permissions -> permissions.entries.forEach {
+            val permissionName = it.key
+            val isGranted = it.value
+
+            // 승인 되었을 때
+            if (isGranted) {
+                Toast.makeText(this@MainActivity, "Permission granted. Now you can read the storage files.", Toast.LENGTH_LONG).show()
+            } else {
+                // 여러개의 권한 요청 중 외부 저장소 이미지 읽기 요청이 맞는지 확인 후 메시지
+                if (permissionName == Manifest.permission.READ_MEDIA_IMAGES) {
+                    Toast.makeText(this@MainActivity, "You denied the permission.", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +63,15 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.getDrawable(this, R.drawable.pallet_selected)
         )
 
-
         // 만든 이미지 버튼 활용
         val ibBrush: ImageButton = findViewById(R.id.ib_brush)
         ibBrush.setOnClickListener{
             showBrushSizeSelectorDialog()
+        }
+        // 갤러리 버튼에 권한 요청 연결
+        val ibGallery: ImageButton = findViewById(R.id.ib_gallery)
+        ibGallery.setOnClickListener{
+            requestStoragePermission()
         }
     }
 
@@ -131,5 +157,26 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             .show()
+    }
+
+    // 저장소 권한을 요청하기 위한 메서드
+    private fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_MEDIA_IMAGES)) {
+            showRationaleDialog("Kids Drawing App", "Kids Drawing App " + "needs to access your External Media Images.")
+        } else {
+            // 권한을 요청하지 못한 경우
+            requestPermission.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
+        }
+    }
+
+    // 이유(=rationale)를 설명하기 위한 다이얼로그
+    private fun showRationaleDialog(title: String, message: String) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Cancel") {
+                dialog, _ -> dialog.dismiss()
+            }
+        builder.create().show()
     }
 }
