@@ -2,9 +2,12 @@ package com.fancytank.kidsdrawingapp
 
 import android.Manifest
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -25,6 +28,15 @@ class MainActivity : AppCompatActivity() {
     // 색상 팔레트 버튼
     private var mImageButtonCurrentPaint: ImageButton? = null
 
+    val openGalleryLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                // 가져온 데이터를 백그라운드 이미지뷰에 대입
+                val imageBackground: ImageView = findViewById(R.id.iv_background)
+                imageBackground.setImageURI(result.data?.data)
+            }
+    }
+
     // 여러개의 권한을 요청할 수 있게 하기 위한 부분
     val requestPermission: ActivityResultLauncher<Array<String>> = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         permissions -> permissions.entries.forEach {
@@ -34,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             // 승인 되었을 때
             if (isGranted) {
                 Toast.makeText(this@MainActivity, "Permission granted. Now you can read the storage files.", Toast.LENGTH_LONG).show()
+
+                // intent 를 사용해서 다른 activity 뿐 아니라 다른 앱으로도 갈 수 있다.
+                val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                openGalleryLauncher.launch(pickIntent)
             } else {
                 // 여러개의 권한 요청 중 외부 저장소 이미지 읽기 요청이 맞는지 확인 후 메시지
                 if (permissionName == Manifest.permission.READ_MEDIA_IMAGES) {
