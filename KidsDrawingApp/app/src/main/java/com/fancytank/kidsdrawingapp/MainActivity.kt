@@ -89,6 +89,11 @@ class MainActivity : AppCompatActivity() {
         ibGallery.setOnClickListener{
             requestStoragePermission()
         }
+        // undo 버튼에 취소 기능 연결
+        val ibUndo: ImageButton = findViewById(R.id.ib_undo)
+        ibUndo.setOnClickListener{
+            drawingView?.onClickUndo()
+        }
     }
 
     // 브러시 사이즈 선택할 수 있게 하는 메서드

@@ -26,11 +26,25 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     /* val로 ArrayList를 만들면, ArrayList 안의 요소는 변경가능하지만 새로운 ArrayList를 만들 수는 없다. */
     private val mPaths = ArrayList<CustomPath>()
 
+    // path를 취소하기 위한 부분
+    private val mUndoPaths = ArrayList<CustomPath>()
 
     // 변수들의 초기화를 위한 부분
     init {
         // 메서드에서 처리
         setUpDrawing()
+    }
+
+    // 그림을 취소시킬 메서드
+    // mPaths의 입력값을 1개 지우고 그걸 mUndoPaths에 저장
+    fun onClickUndo() {
+        // mPaths의 값이 있는 경우에만 삭제
+        if (mPaths.size > 0) {
+            mUndoPaths.add(mPaths.removeAt(mPaths.size - 1))
+            // onDraw를 한번 더 호출하는데, 직접 호출이 아니라 invalidate로 무효화시킴
+            invalidate()
+
+        }
     }
 
     private fun setUpDrawing() {
