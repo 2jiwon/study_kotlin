@@ -94,6 +94,11 @@ class MainActivity : AppCompatActivity() {
         ibUndo.setOnClickListener{
             drawingView?.onClickUndo()
         }
+        // undo 버튼에 취소 기능 연결
+        val ibRedo: ImageButton = findViewById(R.id.ib_redo)
+        ibRedo.setOnClickListener{
+            drawingView?.onClickRedo()
+        }
     }
 
     // 브러시 사이즈 선택할 수 있게 하는 메서드

@@ -43,7 +43,15 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
             mUndoPaths.add(mPaths.removeAt(mPaths.size - 1))
             // onDraw를 한번 더 호출하는데, 직접 호출이 아니라 invalidate로 무효화시킴
             invalidate()
+        }
+    }
 
+    // undo를 취소할 메서드
+    fun onClickRedo() {
+        // mUndoPaths의 값이 있는 경우에만 삭제
+        if (mUndoPaths.size > 0) {
+            mPaths.add(mUndoPaths.removeAt(mUndoPaths.size - 1))
+            invalidate()
         }
     }
 
