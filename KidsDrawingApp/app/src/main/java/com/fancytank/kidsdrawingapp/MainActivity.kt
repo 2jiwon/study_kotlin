@@ -3,12 +3,14 @@ package com.fancytank.kidsdrawingapp
 import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -20,9 +22,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import androidx.lifecycle.lifecycleScope
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.github.dhaval2404.colorpicker.util.ColorUtil.parseColor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -97,10 +107,23 @@ class MainActivity : AppCompatActivity() {
         ibUndo.setOnClickListener{
             drawingView?.onClickUndo()
         }
-        // undo 버튼에 취소 기능 연결
+        // redo 버튼에 재실행 기능 연결
         val ibRedo: ImageButton = findViewById(R.id.ib_redo)
         ibRedo.setOnClickListener{
             drawingView?.onClickRedo()
+        }
+        // save 버튼
+        val ibSave: ImageButton = findViewById(R.id.ib_save)
+        ibSave.setOnClickListener{
+            // 저장소 읽기 권한이 있는지 먼저 체크하고
+            if (isReadStorageAllowed()) {
+                // coroutine 실행
+                lifecycleScope.launch {
+                    // 드로잉뷰와 배경이미지가 있는 FrameLayout을 가져와서 샌드위치처럼 합치는 작업
+                    val flDrawingView: FrameLayout = findViewById(R.id.fl_drawing_view_container)
+                    saveBitmapFile(getBitmapFromView(flDrawingView))
+                }
+            }
         }
     }
 
@@ -188,13 +211,21 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    // 저장소 읽기 권한을 주었는지 확인하기 위한 메서드
+    private fun isReadStorageAllowed(): Boolean {
+        val result = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+
+        return result == PackageManager.PERMISSION_GRANTED
+    }
+
+
     // 저장소 권한을 요청하기 위한 메서드
     private fun requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_MEDIA_IMAGES)) {
             showRationaleDialog("Kids Drawing App", "Kids Drawing App " + "needs to access your External Media Images.")
         } else {
             // 권한을 요청하지 못한 경우
-            requestPermission.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
+            requestPermission.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.WRITE_EXTERNAL_STORAGE))
         }
     }
 
@@ -230,5 +261,46 @@ class MainActivity : AppCompatActivity() {
 
         // bitmap 반환
         return returnedBitmap
+    }
+
+    // bitmap을 기기에 저장하기 위한 부분 - coroutine 사용
+    private suspend fun saveBitmapFile(mBitmap: Bitmap?): String {
+        var result = ""
+
+        // dispatcher로 입출력 조절하는 것
+        withContext(Dispatchers.IO) {
+            // 주어진 비트맵이 null이 아닌지 먼저 확인해야함
+            if (mBitmap != null) {
+                try {
+                    // 바이트 배열 출력스트림을 생성하는 이미지를 출력
+                    val bytes = ByteArrayOutputStream()
+                    // 비트맵 압축 처리
+                    mBitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes)
+                    // 저장할 파일 생성
+                    val f = File(externalCacheDir?.absoluteFile.toString() + File.separator + "KidsDrawingApp_" + System.currentTimeMillis()/1000 + ".png")
+                    // 파일 output 스트림 생성
+                    val fo = FileOutputStream(f)
+                    fo.write(bytes.toByteArray())
+                    fo.close()
+
+                    // 실제 결과 받기
+                    result = f.absolutePath
+
+                    // UI thread에 결과 표시 : 사용자가 파일을 어디에 저장했는지 알려주기
+                    runOnUiThread{
+                        if (result.isNotEmpty()) {
+                            Toast.makeText(this@MainActivity, "File saved successfully :$result", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@MainActivity, "Something went wrong while saving the file.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    result = ""
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        return result
     }
 }
