@@ -2,6 +2,8 @@ package com.fancytank.kidsdrawingapp
 
 import android.Manifest
 import android.app.Dialog
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -9,6 +11,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -31,8 +34,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.io.IOException
 import java.lang.Exception
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
@@ -218,7 +224,6 @@ class MainActivity : AppCompatActivity() {
         return result == PackageManager.PERMISSION_GRANTED
     }
 
-
     // 저장소 권한을 요청하기 위한 메서드
     private fun requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_MEDIA_IMAGES)) {
@@ -277,19 +282,53 @@ class MainActivity : AppCompatActivity() {
                     // 비트맵 압축 처리
                     mBitmap.compress(Bitmap.CompressFormat.PNG, 90, bytes)
                     // 저장할 파일 생성
-                    val f = File(externalCacheDir?.absoluteFile.toString() + File.separator + "KidsDrawingApp_" + System.currentTimeMillis()/1000 + ".png")
-                    // 파일 output 스트림 생성
-                    val fo = FileOutputStream(f)
-                    fo.write(bytes.toByteArray())
-                    fo.close()
+                    /**
+                     * 여기에서부터 참고한 URL : https://kimyunseok.tistory.com/137
+                     */
+                    val filename = "KidsDrawingApp_" + System.currentTimeMillis()/1000 + ".png"
+
+//                    Log.d("package name :: ", packageName)
+
+                    val contentValues = ContentValues()
+                    contentValues.apply {
+                        put(MediaStore.Images.Media.RELATIVE_PATH, "DCIM/" + packageName) // 경로설정(DCIM 아래에 내 패키지명)
+                        put(MediaStore.Images.Media.DISPLAY_NAME, filename) // 파일이름 put
+                        put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+                        put(MediaStore.Images.Media.IS_PENDING, 1) // 해당 저장소 사용중으로 만들기
+                    }
+
+                    // 이미지 저장할 uri 미리 설정
+                    val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+                    try {
+                        if (uri != null) {
+                            // write 모드로 파일 open
+                            val image = contentResolver.openFileDescriptor(uri, "w", null)
+                            if (image != null) {
+                                val fos = FileOutputStream(image.fileDescriptor)
+                                fos.write(bytes.toByteArray())
+                                fos.close()
+
+                                contentValues.clear()
+                                contentValues.put(MediaStore.Images.Media.IS_PENDING, 0) // 저장소 사용중 상태 해제
+                                contentResolver.update(uri, contentValues, null, null)
+                            }
+                        }
+                    } catch(e: FileNotFoundException) {
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
 
                     // 실제 결과 받기
-                    result = f.absolutePath
+                    result = uri.toString()
 
                     // UI thread에 결과 표시 : 사용자가 파일을 어디에 저장했는지 알려주기
                     runOnUiThread{
                         if (result.isNotEmpty()) {
-                            Toast.makeText(this@MainActivity, "File saved successfully :$result", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "File saved successfully at DCIM/" + packageName, Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(this@MainActivity, "Something went wrong while saving the file.", Toast.LENGTH_SHORT).show()
                         }
