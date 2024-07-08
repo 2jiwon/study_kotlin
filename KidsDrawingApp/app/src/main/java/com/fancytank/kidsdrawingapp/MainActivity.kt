@@ -3,6 +3,9 @@ package com.fancytank.kidsdrawingapp
 import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -204,5 +207,28 @@ class MainActivity : AppCompatActivity() {
                 dialog, _ -> dialog.dismiss()
             }
         builder.create().show()
+    }
+
+    // view를 bitmap으로 변환해서 저장하기 위한 메서드
+    private fun getBitmapFromView(view: View): Bitmap {
+        // 마지막에 반환될 bitmap
+        val returnedBitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+
+        // canvas를 view와 바인딩함
+        val canvas = Canvas(returnedBitmap)
+        // 백그라운드 이미지 가져오기
+        val bgDrawable = view.background
+        // 만약 백그라운드에 뭔가 있다면 캔버스에 그림을 그려주고 비어있으면 흰색 배경에 그린다.
+        if (bgDrawable != null) {
+            bgDrawable.draw(canvas)
+        } else {
+            canvas.drawColor(Color.WHITE)
+        }
+
+        // canvas를 view위에 그리기
+        view.draw(canvas)
+
+        // bitmap 반환
+        return returnedBitmap
     }
 }

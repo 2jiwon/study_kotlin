@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 외부 저장소 이미지 읽어오기 위한 권한-->
+    <!-- 이미지 읽어오기 위한 권한 -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- 이미지 쓰기 위한 권한 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
             android:allowBackup="true"
@@ -26,6 +28,19 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- 프로바이더: 컨텐츠 제공자 구성요소 선언 -->
+        <!-- grantUriPermission: 애플리케이션 구성요소가 권한으로 보호되는 데이터에 일회성으로 액세스할 수 있게 하는 방법-->
+        <provider
+                android:authorities="com.fancytank.kidsdrawingapp"
+                android:name="androidx.core.content.FileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/path" />
+
+        </provider>
     </application>
 
 </manifest>
