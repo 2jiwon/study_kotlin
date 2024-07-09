@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView? = null
     // 색상 팔레트 버튼
     private var mImageButtonCurrentPaint: ImageButton? = null
+    // 사용자에게 표시할 진행 다이얼로그
+    var customProgressDialog: Dialog? = null
 
     val openGalleryLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         result ->
@@ -123,6 +125,8 @@ class MainActivity : AppCompatActivity() {
         ibSave.setOnClickListener{
             // 저장소 읽기 권한이 있는지 먼저 체크하고
             if (isReadStorageAllowed()) {
+                // coroutine 실행 전에 사용자에게 다이얼로그 띄우기
+                showProgressDialog()
                 // coroutine 실행
                 lifecycleScope.launch {
                     // 드로잉뷰와 배경이미지가 있는 FrameLayout을 가져와서 샌드위치처럼 합치는 작업
@@ -327,6 +331,9 @@ class MainActivity : AppCompatActivity() {
 
                     // UI thread에 결과 표시 : 사용자가 파일을 어디에 저장했는지 알려주기
                     runOnUiThread{
+                        // 진행 상태 다이얼로그 감추기
+                        cancelProgressDialog()
+
                         if (result.isNotEmpty()) {
                             Toast.makeText(this@MainActivity, "File saved successfully at DCIM/" + packageName, Toast.LENGTH_SHORT).show()
                         } else {
@@ -341,5 +348,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         return result
+    }
+
+    // 사용자들에게 무슨 일이 일어나고 있는지 알려주기 위한 커스텀 다이얼로그 띄우는 메서드
+    private fun showProgressDialog() {
+        customProgressDialog = Dialog(this@MainActivity)
+        // 레이아웃과 연결
+        customProgressDialog?.setContentView(R.layout.dialog_custom_progress)
+        // 다이얼로그를 화면에 띄움
+        customProgressDialog?.show()
+    }
+
+    // 커스텀 다이얼로그를 정지하기 위한 메서드 (이 부분이 없으면 다이얼로그가 계속 화면에 떠 있게 됨)
+    private fun cancelProgressDialog() {
+        if (customProgressDialog != null) {
+            customProgressDialog?.dismiss()
+            customProgressDialog = null
+        }
     }
 }
