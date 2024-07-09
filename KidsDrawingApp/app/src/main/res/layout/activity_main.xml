@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/image"
+            android:src="@drawable/background"
         />
 
         <com.fancytank.kidsdrawingapp.DrawingView
@@ -176,7 +176,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:padding="8dp"
-                android:src="@drawable/ic_brush"
+                android:src="@drawable/paint_brush"
                 android:scaleType="fitXY"
                 android:background="@android:color/transparent"
         />
