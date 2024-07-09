@@ -9,6 +9,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -336,6 +338,12 @@ class MainActivity : AppCompatActivity() {
 
                         if (result.isNotEmpty()) {
                             Toast.makeText(this@MainActivity, "File saved successfully at DCIM/" + packageName, Toast.LENGTH_SHORT).show()
+
+                            // result가 비어있지 않은 경우에만 이미지 공유 기능을 사용할 수 있어야 함
+                            if (uri != null) {
+                                shareImage(uri)
+                            }
+
                         } else {
                             Toast.makeText(this@MainActivity, "Something went wrong while saving the file.", Toast.LENGTH_SHORT).show()
                         }
@@ -365,5 +373,14 @@ class MainActivity : AppCompatActivity() {
             customProgressDialog?.dismiss()
             customProgressDialog = null
         }
+    }
+
+    // 이미지 공유 기능
+    private fun shareImage(uri: Uri) {
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            shareIntent.type = "image/png"
+            startActivity(Intent.createChooser(shareIntent, "Share"))
     }
 }
