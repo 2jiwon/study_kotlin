@@ -6,8 +6,81 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:gravity="center"
-              android:background="@drawable/bg"
+              android:background="@color/primary"
               tools:context=".MainActivity">
 
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:text="내새꾸"
+                  android:textColor="@color/black"
+                  android:textSize="50sp"
+                  android:fontFamily="@font/ariduri_regular"
+                  android:layout_marginBottom="30dp"
+        />
 
+
+        <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/white"
+                android:elevation="5dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                                android:id="@+id/tv_welcome"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="반가워요!"
+                                android:fontFamily="@font/ariduri_regular"
+                                android:textColor="#363A43"
+                                android:textSize="30sp" />
+
+                        <TextView
+                                android:id="@+id/tv_q_username"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center"
+                                android:text="사용자 이름이 어떻게 되시나요?"
+                                android:textColor="#7A8089"
+                                android:textSize="16sp" />
+                        <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/til_name"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                        android:id="@+id/et_username"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:imeOptions="actionGo"
+                                        android:hint="내새꾸에게 불리고 싶은 이름을 입력하세요."
+                                        android:inputType="textCapWords"
+                                        android:textColor="#363A43"
+                                        android:textColorHint="#7A8089" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                                android:id="@+id/btn_start"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:background="#70CCB3"
+                                android:text="시작"
+                                android:fontFamily="@font/ariduri_regular"
+                                android:textColor="@android:color/white"
+                                android:textSize="18sp" />
+                </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
