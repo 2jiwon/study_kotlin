@@ -44,7 +44,7 @@
                                 android:textSize="30sp" />
 
                         <TextView
-                                android:id="@+id/tv_q_username"
+                                android:id="@+id/tv_questions"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="16dp"
@@ -60,7 +60,7 @@
                                 android:layout_marginTop="20dp">
 
                                 <androidx.appcompat.widget.AppCompatEditText
-                                        android:id="@+id/et_username"
+                                        android:id="@+id/et_answers"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:imeOptions="actionGo"
@@ -71,12 +71,12 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <Button
-                                android:id="@+id/btn_start"
+                                android:id="@+id/btn_next"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="16dp"
                                 android:background="#70CCB3"
-                                android:text="시작"
+                                android:text="다음"
                                 android:fontFamily="@font/ariduri_regular"
                                 android:textColor="@android:color/white"
                                 android:textSize="18sp" />
