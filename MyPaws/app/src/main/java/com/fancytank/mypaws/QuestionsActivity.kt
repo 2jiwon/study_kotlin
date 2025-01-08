@@ -41,10 +41,6 @@ class QuestionsActivity : AppCompatActivity() {
         // 뷰 요소 연결
         tvQuestions = findViewById(R.id.tv_questions)
         radioGroupOptions = findViewById(R.id.radioGroupOptions)
-        radioOption1 = findViewById(R.id.radioOption1)
-        radioOption2 = findViewById(R.id.radioOption2)
-        radioOption3 = findViewById(R.id.radioOption3)
-        radioOption4 = findViewById(R.id.radioOption4)
         btnNext = findViewById(R.id.btn_next)
 
         // 질문 시작
@@ -61,22 +57,27 @@ class QuestionsActivity : AppCompatActivity() {
             // 질문 텍스트 설정
             tvQuestions.text = question.text
 
-            // 보기 텍스트 및 가시성 설정
+            // 기존 RadioGroup의 RadioButton 모두 제거
+            radioGroupOptions.removeAllViews()
+
+            // 새로운 RadioButton 추가
             val options = question.options
-            val radioButtons = listOf(radioOption1, radioOption2, radioOption3, radioOption4)
-
-            // 모든 RadioButton 숨기기
-            radioButtons.forEach { it.visibility = View.GONE }
-
-            // 필요한 만큼 RadioButton 업데이트
             options.forEachIndexed { index, option ->
-                if (index < radioButtons.size) {
-                    radioButtons[index].text = option.text
-                    radioButtons[index].visibility = View.VISIBLE
+                val radioButton = RadioButton(this).apply {
+                    id = View.generateViewId() // 고유 ID 생성
+                    text = option.text
+                    textSize = 16f
+                    setPadding(8,10,8,10)
+                    layoutParams = RadioGroup.LayoutParams(
+                        RadioGroup.LayoutParams.WRAP_CONTENT,
+                        RadioGroup.LayoutParams.WRAP_CONTENT
+                    )
                 }
+                // RadioButton을 RadioGroup에 추가
+                radioGroupOptions.addView(radioButton)
             }
 
-            // RadioGroup 초기화
+            // RadioGroup 초기화 (선택해제)
             radioGroupOptions.clearCheck()
         }
     }
@@ -90,13 +91,7 @@ class QuestionsActivity : AppCompatActivity() {
         }
 
         // 선택된 RadioButton의 인덱스 가져오기
-        val selectedIndex = when (selectedOptionId) {
-            R.id.radioOption1 -> 0
-            R.id.radioOption2 -> 1
-            R.id.radioOption3 -> 2
-            R.id.radioOption4 -> 3
-            else -> -1
-        }
+        val selectedIndex = radioGroupOptions.indexOfChild(findViewById(selectedOptionId))
 
         // 다음 질문으로 넘어가기
         if (selectedIndex != -1) {
