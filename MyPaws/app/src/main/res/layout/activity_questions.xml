@@ -1,6 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/parentLayout"
+              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@color/primary"
+              tools:context=".QuestionsActivity">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center_vertical"
+                  android:orientation="horizontal"
+                  android:paddingTop="50dp"
+    >
+
+        <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/white"
+                android:elevation="5dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/tv_questions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:text="질문 1"
+                        android:textColor="#7A8089"
+                        android:textSize="16sp"/>
+
+                <!-- 4지 선다형 RadioGroup -->
+                <RadioGroup
+                        android:id="@+id/radioGroupOptions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    <!-- 선택지 항목 -->
+                    <RadioButton
+                            android:id="@+id/radioOption1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="선택지 1" />
+
+                    <RadioButton
+                            android:id="@+id/radioOption2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="선택지 2" />
+
+                    <RadioButton
+                            android:id="@+id/radioOption3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="선택지 3" />
+
+                    <RadioButton
+                            android:id="@+id/radioOption4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="선택지 4" />
+                </RadioGroup>
+
+                <Button
+                        android:id="@+id/btn_next"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="#70CCB3"
+                        android:text="다음"
+                        android:fontFamily="@font/ariduri_regular"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
 
 </LinearLayout>
