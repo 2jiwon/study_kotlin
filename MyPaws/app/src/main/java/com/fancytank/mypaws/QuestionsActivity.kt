@@ -10,6 +10,8 @@ import com.fancytank.mypaws.Question
 
 class QuestionsActivity : AppCompatActivity() {
 
+    private val openAIClient = OpenAIClient()
+
     // Constants.answers의 [0]은 사용자명
     var cUserName: String = Constants.answers[0]
     // Constants.answers의 [1]은 내새꾸 이름
@@ -95,14 +97,49 @@ class QuestionsActivity : AppCompatActivity() {
 
         // 다음 질문으로 넘어가기
         if (selectedIndex != -1) {
-            val selectedOption = currentQuestion?.options?.get(selectedIndex)
-            currentQuestion = selectedOption?.nextQuestion
 
-            if (currentQuestion != null) {
-                showQuestion()
-            } else {
-                Toast.makeText(this, "모든 질문이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+            currentQuestion?.let { question ->
+                Constants.answers.add(question.options[selectedIndex].text) // 선택된 답변 저장
+
+                val selectedOption = currentQuestion?.options?.get(selectedIndex)
+                currentQuestion = selectedOption?.nextQuestion
+
+                if (currentQuestion != null) {
+                    showQuestion()
+                } else {
+                    // Toast.makeText(this, "모든 질문이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    generateAIResponse(Constants.answers)
+                }
             }
         }
+    }
+
+    fun createPrompt(selectedAnswers: List<String>): String {
+        val petType = selectedAnswers[2]
+        val breed = selectedAnswers[3]
+        val bodyColor = selectedAnswers[4]
+
+        return """
+            You are a $bodyColor $breed $petType. Your name is $cPetsName. Talk to me as $petType, and call me as $cUserName.
+        """.trimIndent()
+    }
+
+    fun generateAIResponse(selectedAnswers: List<String>) {
+        val prompt = createPrompt(selectedAnswers)
+
+        openAIClient.generateResponse(prompt,
+            onSuccess = { response ->
+                runOnUiThread {
+                    // 결과를 화면에 표시
+                    Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+                }
+            },
+            onError = { error ->
+                runOnUiThread {
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+                    Log.d("Error :", error)
+                }
+            }
+        )
     }
 }
