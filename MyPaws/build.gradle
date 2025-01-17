@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.1' // 올바른 위치
+        classpath 'com.android.tools.build:gradle:8.7.3' // 올바른 위치
     }
 }
 
