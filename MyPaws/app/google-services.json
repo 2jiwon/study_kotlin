@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "875894780585",
+    "project_id": "my-paws-app-46ccb",
+    "storage_bucket": "my-paws-app-46ccb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875894780585:android:8e94774562de8bfba56fb8",
+        "android_client_info": {
+          "package_name": "com.fancytank.mypaws"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875894780585-o7qk9mioe045nifi96fs5tfgs6q0slef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fancytank.mypaws",
+            "certificate_hash": "394862a1ef967d1f066dfb96ed77f1d73620233b"
+          }
+        },
+        {
+          "client_id": "875894780585-4sv7o6jdgjceto6kvp7t469bj5do68kp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwL92REYFx5LNMIdzNV9VS05Rbv4swHU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875894780585-4sv7o6jdgjceto6kvp7t469bj5do68kp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

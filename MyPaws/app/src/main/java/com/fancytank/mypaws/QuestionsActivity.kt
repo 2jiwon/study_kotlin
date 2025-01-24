@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.fancytank.mypaws.QuestionData
-import com.fancytank.mypaws.Question
 
 class QuestionsActivity : AppCompatActivity() {
 
@@ -28,10 +26,6 @@ class QuestionsActivity : AppCompatActivity() {
     // View Binding
     private lateinit var tvQuestions: TextView
     private lateinit var radioGroupOptions: RadioGroup
-    private lateinit var radioOption1: RadioButton
-    private lateinit var radioOption2: RadioButton
-    private lateinit var radioOption3: RadioButton
-    private lateinit var radioOption4: RadioButton
     private lateinit var btnNext: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,7 +102,8 @@ class QuestionsActivity : AppCompatActivity() {
                     showQuestion()
                 } else {
                     // Toast.makeText(this, "모든 질문이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    generateAIResponse(Constants.answers)
+
+//                    generateAIResponse(Constants.answers)
                 }
             }
         }

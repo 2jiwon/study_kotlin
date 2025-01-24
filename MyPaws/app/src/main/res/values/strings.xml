@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyPaws</string>
+    <string name="default_web_client_id" translatable="false">875894780585-o7qk9mioe045nifi96fs5tfgs6q0slef.apps.googleusercontent.com</string>
 </resources>
