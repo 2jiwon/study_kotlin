@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var googleLoginHelper: GoogleSignInHelper
+    private lateinit var googleLoginHelper: GoogleSignInManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
 
         Log.d("LOGIN ACTIVITY 여기까지 실행됨?", "1")
 
-        googleLoginHelper = GoogleSignInHelper
+        googleLoginHelper = GoogleSignInManager
         binding.btnSignInGoogle.setOnClickListener {
            signInWithGoogle()
         }
@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun signInWithGoogle() {
         lifecycleScope.launch {
-            GoogleSignInHelper.googleSignIn(
+            GoogleSignInManager.googleSignIn(
                 context = this@LoginActivity,
                 filterByAuthorizedAccounts = false,
                 doOnSuccess = { displayName ->
