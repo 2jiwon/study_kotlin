@@ -51,7 +51,6 @@ object GoogleSignInHelper {
         requestSignIn(
             context,
             request,
-            apiKey,
             filterByAuthorizedAccounts,
             doOnSuccess,
             doOnError
@@ -61,7 +60,6 @@ object GoogleSignInHelper {
     private suspend fun requestSignIn(
         context: Context,
         request: GetCredentialRequest,
-        apiKey: String,
         filterByAuthorizedAccounts: Boolean,
         doOnSuccess: (String) -> Unit,
         doOnError: (Exception) -> Unit,
