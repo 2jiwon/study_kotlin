@@ -124,16 +124,16 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionThree?.text = question.optionThree
         tvOptionFour?.text = question.optionFour
 
-//        if (mCurrentPosition == mQuestionList!!.size) {
-//            btnSubmit?.text = "내 점수 확인2"
-//        } else {
-            btnSubmit?.text = "확인2"
-//        }
+        if (mCurrentPosition == mQuestionList!!.size) {
+            btnSubmit?.text = "내 점수 확인"
+        } else {
+            btnSubmit?.text = "확인"
+        }
     }
 
     // 옵션들의 디폴트 뷰를 설정하는 메서드
     private fun defaultOptionsView() {
-
+        var trial = 0
         val options = ArrayList<TextView>()
         // tvOptionOne,Two...를 options 배열에 넣기
         tvOptionOne?.let { options.add(it) }
@@ -165,7 +165,6 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     // 선택 옵션을 클릭(터치)했을 때
     override fun onClick(view: View?) {
-
         // 클릭된 view 요소에 따라 메서드 실행
         when (view?.id) {
             R.id.btn_audio -> {
