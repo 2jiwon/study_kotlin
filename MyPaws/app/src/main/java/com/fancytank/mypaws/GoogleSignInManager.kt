@@ -1,6 +1,7 @@
 package com.fancytank.mypaws
 
 import android.content.Context
+import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -11,6 +12,10 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 
+/**
+ *
+ * https://proandroiddev.com/google-sign-in-with-credential-manager-c54762376170
+ */
 object GoogleSignInManager {
 
     private lateinit var credentialManager: CredentialManager
@@ -106,5 +111,13 @@ object GoogleSignInManager {
             }
         }
         return null
+    }
+
+    suspend fun signOut(context: Context) {
+        if (::credentialManager.isInitialized.not()) {
+            credentialManager = CredentialManager
+                .create(context)
+        }
+        credentialManager.clearCredentialState(ClearCredentialStateRequest())
     }
 }
