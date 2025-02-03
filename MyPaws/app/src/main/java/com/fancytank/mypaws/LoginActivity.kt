@@ -5,8 +5,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.fancytank.mypaws.databinding.ActivityLoginBinding
 import androidx.lifecycle.lifecycleScope
+import com.fancytank.mypaws.databinding.ActivityLoginBinding
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
