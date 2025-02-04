@@ -8,6 +8,10 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 
+import android.util.Base64
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
+
 /**
  *
  * https://proandroiddev.com/google-sign-in-with-credential-manager-c54762376170
@@ -95,8 +99,19 @@ object GoogleSignInManager {
                         // authenticate on your server.
                         val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
 
+                        val expirationTime = getGoogleIdTokenExpiration(googleIdTokenCredential.idToken)
+                        if (expirationTime != null) {
+                            val currentTime = System.currentTimeMillis() / 1000 // Unix Timestamp 변환
+                            if (currentTime >= expirationTime) {
+                                Log.e("LOGIN", "ID Token expired. User needs to re-authenticate.")
+                            } else {
+                                Log.e("LOGIN", "ID Token is valid. Expiration time: $expirationTime")
+                            }
+                        }
+
                         Log.e("LOGIN", "googleIdTokenCredential: ${googleIdTokenCredential}")
-                        Log.e("LOGIN", "Google ID Token: ${googleIdTokenCredential.id}")
+                        Log.e("LOGIN", "Google ID : ${googleIdTokenCredential.id}")
+                        Log.e("LOGIN", "Google ID Token: ${googleIdTokenCredential.idToken}")
                         Log.e("LOGIN", "Display Name: ${googleIdTokenCredential.displayName}")
                         Log.e("LOGIN", "Email: ${googleIdTokenCredential.id}")
 
@@ -124,5 +139,20 @@ object GoogleSignInManager {
                 .create(context)
         }
         credentialManager.clearCredentialState(ClearCredentialStateRequest())
+    }
+
+    fun getGoogleIdTokenExpiration(idToken: String): Long? {
+        return try {
+            // JWT 구조: header.payload.signature
+            val payload = idToken.split(".")[1]
+            val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
+            val payloadJson = JSONObject(String(decodedBytes, StandardCharsets.UTF_8))
+
+            // `exp` 값 가져오기 (Unix Timestamp)
+            payloadJson.optLong("exp", 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }
