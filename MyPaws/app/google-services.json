@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "875894780585-o7qk9mioe045nifi96fs5tfgs6q0slef.apps.googleusercontent.com",
+          "client_id": "875894780585-768bm487u22bku3ib8kacas039j81ig6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.fancytank.mypaws",
-            "certificate_hash": "b1983af56518c8ce5cfd8b09c3232763b94b4a80"
+            "certificate_hash": "394862a1ef967d1f066dfb96ed77f1d73620233b"
           }
         },
         {

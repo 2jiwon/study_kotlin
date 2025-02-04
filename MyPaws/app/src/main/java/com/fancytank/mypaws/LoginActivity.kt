@@ -1,5 +1,7 @@
 package com.fancytank.mypaws
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -12,7 +14,7 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var googleLoginHelper: GoogleSignInManager
+    private lateinit var googleLoginManager: GoogleSignInManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,19 +26,25 @@ class LoginActivity : AppCompatActivity() {
 
         Log.d("LOGIN ACTIVITY 여기까지 실행됨?", "1")
 
-        googleLoginHelper = GoogleSignInManager
+        googleLoginManager = GoogleSignInManager
         binding.btnSignInGoogle.setOnClickListener {
-           signInWithGoogle()
+
+           signInWithGoogle(this)
         }
     }
 
-    private fun signInWithGoogle() {
+    private fun signInWithGoogle(context: Context) {
+
         lifecycleScope.launch {
-            GoogleSignInManager.googleSignIn(
+            googleLoginManager.googleSignIn(
                 context = this@LoginActivity,
                 filterByAuthorizedAccounts = false,
                 doOnSuccess = { displayName ->
                     Toast.makeText(this@LoginActivity, "Welcome, $displayName!", Toast.LENGTH_LONG).show()
+                    // 로그인 성공했으면 메인 액티비티 실행
+                    val intent = Intent(context, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 },
                 doOnError = { exception ->
                     Toast.makeText(this@LoginActivity, "Login Failed: ${exception.message}", Toast.LENGTH_LONG).show()

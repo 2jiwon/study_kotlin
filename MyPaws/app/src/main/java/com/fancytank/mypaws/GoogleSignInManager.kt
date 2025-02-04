@@ -1,6 +1,7 @@
 package com.fancytank.mypaws
 
 import android.content.Context
+import android.util.Log
 import androidx.credentials.*
 import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -28,6 +29,8 @@ object GoogleSignInManager {
 
         val apiKey = context.getString(R.string.default_web_client_id)
 
+        Log.d("LOGIN api key :: ", apiKey)
+
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption
             .Builder()
             .setFilterByAuthorizedAccounts(false)
@@ -48,6 +51,7 @@ object GoogleSignInManager {
             doOnError
         )
     }
+
 
     private suspend fun requestSignIn(
         context: Context,
@@ -80,29 +84,35 @@ object GoogleSignInManager {
     }
 
     private fun handleCredentials(credential: Credential): String? {
-        when (credential) {
+        Log.e("LOGIN credential :: ", credential.toString())
 
+        when (credential) {
             // GoogleIdToken credential
             is CustomCredential -> {
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     try {
                         // Use googleIdTokenCredential and extract id to validate and
                         // authenticate on your server.
-                        val googleIdTokenCredential = GoogleIdTokenCredential
-                            .createFrom(credential.data)
+                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+
+                        Log.e("LOGIN", "googleIdTokenCredential: ${googleIdTokenCredential}")
+                        Log.e("LOGIN", "Google ID Token: ${googleIdTokenCredential.id}")
+                        Log.e("LOGIN", "Display Name: ${googleIdTokenCredential.displayName}")
+                        Log.e("LOGIN", "Email: ${googleIdTokenCredential.id}")
+
                         return googleIdTokenCredential.displayName
                     } catch (e: GoogleIdTokenParsingException) {
-                        println("Received an invalid google id token response $e")
+                        Log.e("LOGIN", "Received an invalid google id token response $e")
                     }
                 } else {
                     // Catch any unrecognized custom credential type here.
-                    println("Unexpected type of credential")
+                    Log.e("LOGIN", "Unexpected type of credential 1")
                 }
             }
 
             else -> {
                 // Catch any unrecognized credential type here.
-                println("Unexpected type of credential")
+                Log.e("LOGIN", "Unexpected type of credential 2")
             }
         }
         return null
