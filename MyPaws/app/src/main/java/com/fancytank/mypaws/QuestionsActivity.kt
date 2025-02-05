@@ -1,5 +1,6 @@
 package com.fancytank.mypaws
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -101,9 +102,9 @@ class QuestionsActivity : AppCompatActivity() {
                 if (currentQuestion != null) {
                     showQuestion()
                 } else {
-                    // Toast.makeText(this, "모든 질문이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                     Toast.makeText(this, "모든 질문이 완료되었습니다.", Toast.LENGTH_SHORT).show()
 
-//                    generateAIResponse(Constants.answers)
+                    generateAIResponse(Constants.answers)
                 }
             }
         }
@@ -126,7 +127,10 @@ class QuestionsActivity : AppCompatActivity() {
             onSuccess = { response ->
                 runOnUiThread {
                     // 결과를 화면에 표시
-                    Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+//                    Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, ChatActivity::class.java)
+                    intent.putExtra("AI_RESPONSE", response)
+                    startActivity(intent)
                 }
             },
             onError = { error ->

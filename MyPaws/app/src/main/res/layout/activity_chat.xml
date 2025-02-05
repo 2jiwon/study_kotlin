@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ChatActivity"
+                android:background="@color/chat_background">
+
+    <!-- 툴바 (카카오톡 상단 바) -->
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/chat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            android:elevation="4dp"
+            app:title="채팅방 이름"
+            app:titleTextColor="@color/black"
+            app:navigationIcon="@drawable/ic_back"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <!-- 채팅 메시지 목록 -->
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_chat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/chat_toolbar"
+            android:layout_above="@id/chat_input_layout"
+            android:padding="8dp"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+
+    <!-- 입력창 (메시지 입력 및 전송 버튼) -->
+    <LinearLayout
+            android:id="@+id/chat_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:padding="8dp"
+            android:orientation="horizontal">
+
+        <!-- 이모티콘 버튼 -->
+        <ImageView
+                android:id="@+id/btn_emoji"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_emoji"
+                android:padding="8dp"
+                android:contentDescription="이모티콘 버튼" />
+
+        <!-- 텍스트 입력창 -->
+        <EditText
+                android:id="@+id/edit_message"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edit_text"
+                android:hint="메시지를 입력하세요"
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+        <!-- 전송 버튼 -->
+        <ImageView
+                android:id="@+id/btn_send"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_send"
+                android:padding="8dp"
+                android:contentDescription="전송 버튼" />
+    </LinearLayout>
+
+</RelativeLayout>

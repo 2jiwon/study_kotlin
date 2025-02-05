@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#E8BA77</color>
     <color name="secondary">#A8E0D1</color>
+    <color name="chat_background">#F2F2F2</color>
 </resources>
