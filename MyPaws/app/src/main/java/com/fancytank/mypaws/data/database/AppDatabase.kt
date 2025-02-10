@@ -10,7 +10,7 @@ import com.fancytank.mypaws.data.dao.UserDao
 import com.fancytank.mypaws.data.entity.Pet
 import com.fancytank.mypaws.data.entity.User
 
-@Database(entities = [User::class, Pet::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Pet::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun petDao(): PetDao
@@ -25,7 +25,8 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app-database"
-                ).build()
+                ).fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
 
                 Log.d("AppDatabase ", "Database instance created")

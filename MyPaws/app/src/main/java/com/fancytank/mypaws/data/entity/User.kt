@@ -9,5 +9,6 @@ data class User(
     val email: String,
     val password: String,
     val username: String,
-    var nickname: String
+    var nickname: String,
+    var pictureUrl: String? = null
 )

@@ -23,5 +23,6 @@ data class Pet(
     val breed: String? = null,
     val age: Int? = null,
     val bodyColor: String? = null,
-    val eyeColor: String? = null
+    val eyeColor: String? = null,
+    var pictureUrl: String? = null
 )
