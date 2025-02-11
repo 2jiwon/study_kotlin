@@ -104,13 +104,13 @@ class QuestionsActivity : AppCompatActivity() {
                 } else {
                      Toast.makeText(this, "모든 질문이 완료되었습니다.", Toast.LENGTH_SHORT).show()
 
-                    generateAIResponse(Constants.answers)
+                    generateInitAIResponse(Constants.answers)
                 }
             }
         }
     }
 
-    fun createPrompt(selectedAnswers: List<String>): String {
+    fun createInitPrompt(selectedAnswers: List<String>): String {
         val petType = selectedAnswers[2]
         val breed = selectedAnswers[3]
         val bodyColor = selectedAnswers[4]
@@ -120,8 +120,8 @@ class QuestionsActivity : AppCompatActivity() {
         """.trimIndent()
     }
 
-    fun generateAIResponse(selectedAnswers: List<String>) {
-        val prompt = createPrompt(selectedAnswers)
+    fun generateInitAIResponse(selectedAnswers: List<String>) {
+        val prompt = createInitPrompt(selectedAnswers)
 
         openAIClient.generateResponse(prompt,
             onSuccess = { response ->
