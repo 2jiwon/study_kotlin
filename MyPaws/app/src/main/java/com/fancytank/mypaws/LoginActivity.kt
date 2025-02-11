@@ -39,10 +39,13 @@ class LoginActivity : AppCompatActivity() {
             googleLoginManager.googleSignIn(
                 context = this@LoginActivity,
                 filterByAuthorizedAccounts = false,
-                doOnSuccess = { displayName ->
-                    Toast.makeText(this@LoginActivity, "Welcome, $displayName!", Toast.LENGTH_LONG).show()
+                doOnSuccess = { credential ->
+                    Toast.makeText(this@LoginActivity, "Welcome, $credential.displayName!", Toast.LENGTH_LONG).show()
                     // 로그인 성공했으면 메인 액티비티 실행
                     val intent = Intent(context, MainActivity::class.java)
+                    intent.putExtra("GOOGLE_ID", credential.id)
+                    intent.putExtra("DISPLAY_NAME", credential.displayName)
+                    intent.putExtra("PROFILE_PICTURE_URI", credential.profilePictureUri)
                     startActivity(intent)
                     finish()
                 },

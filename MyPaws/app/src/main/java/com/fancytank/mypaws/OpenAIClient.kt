@@ -1,6 +1,8 @@
 package com.fancytank.mypaws
 
 import android.util.Log
+import com.fancytank.mypaws.data.entity.Pet
+import com.fancytank.mypaws.data.entity.User
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -12,6 +14,14 @@ class OpenAIClient {
     private val client = OkHttpClient()
     private val apiKey =  BuildConfig.OPENAI_API_KEY
     private val endPoint = "https://api.openai.com/v1/chat/completions"
+
+    fun generatePrompt(user: User, pet: Pet): String {
+
+        return """
+            You are a $pet.bodyColor $pet.breed $pet.petType. Your name is ${pet.name}. Talk to me as ${pet.type}, and call me as ${user.nickname}.
+            Please remember we had been talked already, this is not our first conversation.  
+        """.trimIndent()
+    }
 
     fun generateResponse(prompt: String, onSuccess: (String) -> Unit, onError: (String) -> Unit) {
         val mediaType = "application/json".toMediaType()

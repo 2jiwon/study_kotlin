@@ -1,14 +1,13 @@
 package com.fancytank.mypaws
 
 import android.content.Context
+import android.util.Base64
 import android.util.Log
 import androidx.credentials.*
 import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-
-import android.util.Base64
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
@@ -23,7 +22,7 @@ object GoogleSignInManager {
     suspend fun googleSignIn(
         context: Context,
         filterByAuthorizedAccounts: Boolean,
-        doOnSuccess: (String) -> Unit,
+        doOnSuccess: (GoogleIdTokenCredential) -> Unit,
         doOnError: (Exception) -> Unit,
     ) {
         if (::credentialManager.isInitialized.not()) {
@@ -61,7 +60,7 @@ object GoogleSignInManager {
         context: Context,
         request: GetCredentialRequest,
         filterByAuthorizedAccounts: Boolean,
-        doOnSuccess: (String) -> Unit,
+        doOnSuccess: (GoogleIdTokenCredential) -> Unit,
         doOnError: (Exception) -> Unit,
     ) {
         try {
@@ -69,9 +68,9 @@ object GoogleSignInManager {
                 request = request,
                 context = context,
             )
-            val displayName = handleCredentials(result.credential)
-            displayName?.let {
-                doOnSuccess(displayName)
+            val credential = handleCredentials(result.credential)
+            credential?.let {
+                doOnSuccess(it)
             } ?: doOnError(Exception("Invalid user"))
         } catch (e: Exception){
             if (e is NoCredentialException && filterByAuthorizedAccounts) {
@@ -87,7 +86,7 @@ object GoogleSignInManager {
         }
     }
 
-    private fun handleCredentials(credential: Credential): String? {
+    private fun handleCredentials(credential: Credential): GoogleIdTokenCredential? {
         Log.e("LOGIN credential :: ", credential.toString())
 
         when (credential) {
@@ -109,13 +108,14 @@ object GoogleSignInManager {
                             }
                         }
 
-                        Log.e("LOGIN", "googleIdTokenCredential: ${googleIdTokenCredential}")
+//                        Log.e("LOGIN", "googleIdTokenCredential: ${googleIdTokenCredential}")
                         Log.e("LOGIN", "Google ID : ${googleIdTokenCredential.id}")
-                        Log.e("LOGIN", "Google ID Token: ${googleIdTokenCredential.idToken}")
+//                        Log.e("LOGIN", "Google ID Token: ${googleIdTokenCredential.idToken}")
                         Log.e("LOGIN", "Display Name: ${googleIdTokenCredential.displayName}")
-                        Log.e("LOGIN", "Email: ${googleIdTokenCredential.id}")
+                        Log.e("LOGIN", "Data: ${googleIdTokenCredential.data}")
+                        Log.e("LOGIN", "Profile picture uri: ${googleIdTokenCredential.profilePictureUri}")
 
-                        return googleIdTokenCredential.displayName
+                        return googleIdTokenCredential
                     } catch (e: GoogleIdTokenParsingException) {
                         Log.e("LOGIN", "Received an invalid google id token response $e")
                     }
