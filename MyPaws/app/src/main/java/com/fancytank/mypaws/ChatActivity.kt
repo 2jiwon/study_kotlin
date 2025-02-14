@@ -6,17 +6,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fancytank.mypaws.databinding.ActivityChatBinding
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChatAdapter
     private val messages = mutableListOf<ChatMessage>() // 메시지 리스트
 
+    private lateinit var binding: ActivityChatBinding
+
     private val openAIClient = OpenAIClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+
+        binding = ActivityChatBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // RecyclerView 설정
         recyclerView = findViewById(R.id.recycler_chat)
@@ -32,6 +37,15 @@ class ChatActivity : AppCompatActivity() {
         initResponse?.let {
             addAIMessage(it)
         }
+
+        val message = binding.editMessage.text.toString()
+        binding.btnSend.setOnClickListener {
+            Log.d("버튼 눌림?? ", message)
+            if (message.isNotEmpty()) {
+                addUserMessage(message)
+            }
+        }
+
     }
 
     // 사용자 메시지 추가
