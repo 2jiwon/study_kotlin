@@ -1,5 +1,102 @@
 <resources>
     <string name="app_name">MyPaws</string>
     <string name="default_web_client_id" translatable="false">875894780585-4sv7o6jdgjceto6kvp7t469bj5do68kp.apps.googleusercontent.com</string>
+
+    <!-- 반려동물 종류 질문 -->
+    <string name="question_pet_type">What kind of pet do you have?</string>
+    <!-- 반려동물 종류 답변 옵션 -->
+    <string name="pet_type_dog">Dog</string>
+    <string name="pet_type_cat">Cat</string>
+    <string name="pet_type_hamster">Hamster</string>
+
+    <!-- 강아지 종류 질문 -->
+    <string name="question_dog_breed">Please select a Dog breed.</string>
+    <!-- 강아지 종류 답변 -->
+    <string name="dog_breed_beagle">Beagle</string>
+    <string name="dog_breed_boston_terrier">Boston Terrier</string>
+    <string name="dog_breed_boxer">Boxer</string>
+    <string name="dog_breed_bulldog">Bulldog</string>
+    <string name="dog_breed_cocker_spaniel">Cocker Spaniel</string>
+    <string name="dog_breed_chihuahua">Chihuahua</string>
+    <string name="dog_breed_dachshund">Dachshund</string>
+    <string name="dog_breed_doberman">Doberman</string>
+    <string name="dog_breed_golden_retriever">Golden Retriever</string>
+    <string name="dog_breed_husky">Husky</string>
+    <string name="dog_breed_labrador_retriever">Labrador Retriever</string>
+    <string name="dog_breed_maltiz">Maltiz</string>
+    <string name="dog_breed_poodle">Poodle</string>
+    <string name="dog_breed_pomeranian">Pomeranian</string>
+    <string name="dog_breed_pomspitz">Pomspitz</string>
+    <string name="dog_breed_pug">Pug</string>
+    <string name="dog_breed_rottweiler">Rottweiler</string>
+    <string name="dog_breed_schnauzer">Schnauzer</string>
+    <string name="dog_breed_shih_tzu">Shihtzu</string>
+    <string name="dog_breed_shepherd">Shepherd</string>
+    <string name="dog_breed_spitz">Spitz</string>
+    <string name="dog_breed_welsh_corgi">Welsh Corgi</string>
+
+    <!-- 고양이 종류 질문 -->
+    <string name="question_cat_breed">Please select a Cat breed.</string>
+    <!-- 고양이 종류 답변 옵션 -->
+    <string name="cat_breed_abyssinian">Abyssinian</string>
+    <string name="cat_breed_american_shorthair">American Shorthair</string>
+    <string name="cat_breed_bengal">Bengal</string>
+    <string name="cat_breed_birman">Birman</string>
+    <string name="cat_breed_bombay">Bombay</string>
+    <string name="cat_breed_british_shorthair">British Shorthair</string>
+    <string name="cat_breed_devon_rex">Devon Rex</string>
+    <string name="cat_breed_korean_shorthair">Korean Shorthair</string>
+    <string name="cat_breed_maine_coon">MaineCoon</string>
+    <string name="cat_breed_munchkin">Munchkin</string>
+    <string name="cat_breed_norwegian_forest">Norwegian Forest</string>
+    <string name="cat_breed_ocicat">Ocicat</string>
+    <string name="cat_breed_persian">Persian</string>
+    <string name="cat_breed_persian_chinchilla">Persian Chinchilla</string>
+    <string name="cat_breed_ragdoll">Ragdoll</string>
+    <string name="cat_breed_russian_blue">Russian Blue</string>
+    <string name="cat_breed_scottish_fold">Scottish Fold</string>
+    <string name="cat_breed_siamese">Siamese</string>
+    <string name="cat_breed_siberian">Siberian</string>
+    <string name="cat_breed_sphynx">Sphynx</string>
+    <string name="cat_breed_tonkinese">Tonkinese</string>
+    <string name="cat_breed_turkish_angora">Turkish Angora</string>
+
+
+
+
+    <!-- 바디 색상 질문 -->
+    <string name="question_body_color">Please select a body color.</string>
+    <!-- 바디 색상 답변 옵션 -->
+    <string name="body_color_white">White</string>
+    <string name="body_color_black">Black</string>
+    <string name="body_color_brown">Brown</string>
+    <string name="body_color_gray">Gray</string>
+    <string name="body_color_light_brown">Light Brown</string>
+    <string name="body_color_dark_brown">Dark Brown</string>
+    <string name="body_color_black_white_mix">Mostly Black with White markings</string>
+    <string name="body_color_black_brown_mix">Mostly Black with Brown markings</string>
+    <string name="body_color_white_black_mix">Mostly White with Black markings</string>
+    <string name="body_color_white_brown_mix">Mostly White with Brown markings</string>
+    <string name="body_color_black_white_spot">Black base with White spots</string>
+    <string name="body_color_white_black_spot">White base with Black spots</string>
+    <string name="body_color_tabby">Tabby pattern</string>
+    <string name="body_color_white_black_eye_patches">Mostly White with Black eye patches</string>
+    <string name="body_color_white_brown_eye_patches">Mostly White with Brown eye patches</string>
+    <string name="body_color_white_black_ears">Mostly White with Black ears</string>
+    <string name="body_color_white_brown_ears">Mostly White with Brown ears</string>
+
+    <!-- 눈 색상 질문 -->
+    <string name="question_eyes_color">Please select eyes colors.</string>
+    <!-- 눈 색상 답변 옵션 -->
+    <string name="eyes_color_white">White</string>
+    <string name="eyes_color_black">Black</string>
+    <string name="eyes_color_brown">Brown</string>
+    <string name="eyes_color_gray">Gray</string>
+    <string name="eyes_color_light_brown">Light Brown</string>
+    <string name="eyes_color_dark_brown">Dark Brown</string>
+    <string name="eyes_color_yellow">Yellow</string>
+    <string name="eyes_color_red">Red</string>
+    <string name="eyes_color_green">Green</string>
+    <string name="eyes_color_sky_blue">Sky Blue</string>
 </resources>
 

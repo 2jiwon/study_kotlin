@@ -1,0 +1,102 @@
+<resources>
+    <string name="app_name">내새꾸</string>
+    <string name="default_web_client_id" translatable="false">875894780585-4sv7o6jdgjceto6kvp7t469bj5do68kp.apps.googleusercontent.com</string>
+
+    <!-- 반려동물 종류 질문 -->
+    <string name="question_pet_type">내새꾸는 어떤 동물인가요?</string>
+    <!-- 반려동물 종류 답변 옵션 -->
+    <string name="pet_type_dog">강아지</string>
+    <string name="pet_type_cat">고양이</string>
+    <string name="pet_type_hamster">햄스터</string>
+
+    <!-- 강아지 종류 질문 -->
+    <string name="question_dog_breed">강아지 종류를 선택해주세요.</string>
+    <!-- 강아지 종류 답변 -->
+    <string name="dog_breed_golden_retriever">골든 리트리버</string>
+    <string name="dog_breed_dachshund">닥스훈트</string>
+    <string name="dog_breed_doberman">도베르만</string>
+    <string name="dog_breed_labrador_retriever">레브라도리트리버</string>
+    <string name="dog_breed_rottweiler">로트와일러</string>
+    <string name="dog_breed_maltiz">말티즈</string>
+    <string name="dog_breed_boston_terrier">보스턴 테리어</string>
+    <string name="dog_breed_boxer">복서</string>
+    <string name="dog_breed_bulldog">불독</string>
+    <string name="dog_breed_beagle">비글</string>
+    <string name="dog_breed_schnauzer">슈나우저</string>
+    <string name="dog_breed_spitz">스피츠</string>
+    <string name="dog_breed_shih_tzu">시츄</string>
+    <string name="dog_breed_welsh_corgi">웰시 코기</string>
+    <string name="dog_breed_shepherd">저먼 셰퍼드</string>
+    <string name="dog_breed_chihuahua">치와와</string>
+    <string name="dog_breed_cocker_spaniel">코커 스패니얼</string>
+    <string name="dog_breed_pug">퍼그</string>
+    <string name="dog_breed_pomeranian">포메라니안</string>
+    <string name="dog_breed_pomspitz">폼피츠</string>
+    <string name="dog_breed_poodle">푸들</string>
+    <string name="dog_breed_husky">허스키</string>
+
+    <!-- 고양이 종류 질문 -->
+    <string name="question_cat_breed">고양이 종류를 선택해주세요.</string>
+    <!-- 고양이 종류 답변 옵션 -->
+    <string name="cat_breed_abyssinian">아비시니안</string>
+    <string name="cat_breed_american_shorthair">아메리칸 숏헤어</string>
+    <string name="cat_breed_bengal">벵갈</string>
+    <string name="cat_breed_birman">버만</string>
+    <string name="cat_breed_bombay">봄베이</string>
+    <string name="cat_breed_british_shorthair">브리티시 숏헤어</string>
+    <string name="cat_breed_devon_rex">데본 렉스</string>
+    <string name="cat_breed_korean_shorthair">코리안 숏헤어</string>
+    <string name="cat_breed_maine_coon">메인쿤</string>
+    <string name="cat_breed_munchkin">먼치킨</string>
+    <string name="cat_breed_norwegian_forest">노르웨이 숲</string>
+    <string name="cat_breed_ocicat">오시캣</string>
+    <string name="cat_breed_persian">페르시안</string>
+    <string name="cat_breed_persian_chinchilla">페르시안 친칠라</string>
+    <string name="cat_breed_ragdoll">래그돌</string>
+    <string name="cat_breed_russian_blue">러시안블루</string>
+    <string name="cat_breed_scottish_fold">스코티시 폴드</string>
+    <string name="cat_breed_siamese">샴</string>
+    <string name="cat_breed_siberian">시베리안</string>
+    <string name="cat_breed_sphynx">스핑크스</string>
+    <string name="cat_breed_tonkinese">통키니즈</string>
+    <string name="cat_breed_turkish_angora">터키시 앙고라</string>
+
+
+    <!-- 바디 색상 질문 -->
+    <string name="question_body_color">내새꾸의 털은 전체적으로 어떤 색인가요?</string>
+    <!-- 바디 색상 답변 옵션 -->
+    <string name="body_color_white">흰색</string>
+    <string name="body_color_black">검정</string>
+    <string name="body_color_brown">갈색</string>
+    <string name="body_color_gray">회색</string>
+    <string name="body_color_light_brown">밝은 갈색</string>
+    <string name="body_color_dark_brown">어두운 갈색</string>
+    <string name="body_color_black_white_mix">주로 검정 + 흰색 섞임</string>
+    <string name="body_color_black_brown_mix">주로 검정 + 갈색 섞임</string>
+    <string name="body_color_white_black_mix">주로 흰색 + 검정 섞임</string>
+    <string name="body_color_white_brown_mix">주로 흰색 + 갈색 섞임</string>
+    <string name="body_color_black_white_spot">검정 바탕에 흰색 얼룩 무늬</string>
+    <string name="body_color_white_black_spot">흰 바탕에 검정 얼룩 무늬</string>
+    <string name="body_color_tabby">호랑이 무늬</string>
+    <string name="body_color_white_black_eye_patches">주로 흰색 + 눈 주위만 검정</string>
+    <string name="body_color_white_brown_eye_patches">주로 흰색 + 눈 주위만 갈색</string>
+    <string name="body_color_white_black_ears">주로 흰색 + 귀 부분만 검정</string>
+    <string name="body_color_white_brown_ears">주로 흰색 + 귀 부분만 갈색</string>
+
+
+
+    <!-- 눈 색상 질문 -->
+    <string name="question_eyes_color">눈동자는 어떤 색인가요?</string>
+    <!-- 눈 색상 답변 옵션 -->
+    <string name="eyes_color_white">흰색</string>
+    <string name="eyes_color_black">검정</string>
+    <string name="eyes_color_brown">갈색</string>
+    <string name="eyes_color_gray">회색</string>
+    <string name="eyes_color_light_brown">밝은 갈색</string>
+    <string name="eyes_color_dark_brown">어두운 갈색</string>
+    <string name="eyes_color_yellow">노란색</string>
+    <string name="eyes_color_red">붉은색</string>
+    <string name="eyes_color_green">초록색</string>
+    <string name="eyes_color_sky_blue">하늘색</string>
+</resources>
+
