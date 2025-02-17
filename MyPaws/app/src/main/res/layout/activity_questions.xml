@@ -23,42 +23,48 @@
                 android:background="@color/white"
                 android:elevation="5dp">
 
-            <LinearLayout
+            <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                <TextView
-                        android:id="@+id/tv_questions"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:gravity="center"
-                        android:text="질문 1"
-                        android:textColor="#7A8089"
-                        android:textSize="16sp"/>
-
-                <!-- 4지 선다형 RadioGroup -->
-                <RadioGroup
-                        android:id="@+id/radioGroupOptions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
                         android:orientation="vertical">
-                </RadioGroup>
 
-                <Button
-                        android:id="@+id/btn_next"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:background="#70CCB3"
-                        android:text="다음"
-                        android:fontFamily="@font/ariduri_regular"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"/>
-            </LinearLayout>
+                    <TextView
+                            android:id="@+id/tv_questions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:gravity="center"
+                            android:text="질문 1"
+                            android:textColor="#7A8089"
+                            android:textSize="16sp"/>
+
+                    <!-- Spinner (Select Box) -->
+                    <Spinner
+                            android:id="@+id/spinnerOptions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            />
+
+                    <Button
+                            android:id="@+id/btn_next"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:background="#70CCB3"
+                            android:text="다음"
+                            android:fontFamily="@font/ariduri_regular"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp"/>
+                </LinearLayout>
+
+            </ScrollView>
 
         </com.google.android.material.card.MaterialCardView>
 

@@ -2,6 +2,8 @@
     <string name="app_name">MyPaws</string>
     <string name="default_web_client_id" translatable="false">875894780585-4sv7o6jdgjceto6kvp7t469bj5do68kp.apps.googleusercontent.com</string>
 
+    <string name="select_answer_prompt">Please select an answer.</string>
+
     <!-- 반려동물 종류 질문 -->
     <string name="question_pet_type">What kind of pet do you have?</string>
     <!-- 반려동물 종류 답변 옵션 -->
@@ -60,9 +62,6 @@
     <string name="cat_breed_sphynx">Sphynx</string>
     <string name="cat_breed_tonkinese">Tonkinese</string>
     <string name="cat_breed_turkish_angora">Turkish Angora</string>
-
-
-
 
     <!-- 바디 색상 질문 -->
     <string name="question_body_color">Please select a body color.</string>
