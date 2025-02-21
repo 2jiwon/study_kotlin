@@ -22,14 +22,8 @@ class MainActivity : AppCompatActivity() {
     val TAG = "MAIN ACTIVITY :: "
 
     private lateinit var binding: ActivityMainBinding
-    private val base_questions = listOf( // 질문 목록
-        "사용자님의 이름을 입력해주세요.",
-        "세상에서 가장 이쁜 내새꾸의 이름은 무엇인가요?"
-    )
-    private val base_hints = listOf(
-        "내새꾸에게 불리고 싶은 이름을 입력하세요.",
-        "내새꾸의 이름이 뭔가요?"
-    )
+    private lateinit var baseQuestions: List<String>
+    private lateinit var baseHints: List<String>
 
     var user : User? = null
     var pet : List<Pet>? = null
@@ -42,9 +36,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 화면 전환 전에 UI 숨기기
+        binding.root.visibility = View.GONE
+
+        // strings.xml에서 기본 질문,힌트 가져오기
+        baseQuestions = resources.getStringArray(R.array.base_questions).toList()
+        baseHints = resources.getStringArray(R.array.base_hints).toList()
+
         // LoginActivity에서 전달받은 정보 가져오기
         val googleId = intent.getStringExtra("GOOGLE_ID")
-
         googleId?.let { Log.d(TAG, it) }
 
         // 기존에 이미 사용자 정보가 있는지 확인
@@ -110,9 +110,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     // 첫 번째 질문 설정
-                    binding.tvQuestions.text = base_questions[currentQuestionIndex]
+                    binding.tvQuestions.text = baseQuestions[currentQuestionIndex]
                     // 힌트
-                    binding.tilName.hint = base_hints[currentQuestionIndex]
+                    binding.tilName.hint = baseHints[currentQuestionIndex]
 
                     // 처음에 "다음" 버튼 숨김
                     binding.btnNext.visibility = View.GONE
@@ -179,10 +179,10 @@ class MainActivity : AppCompatActivity() {
                             binding.etAnswers.text!!.clear()
 
                             // 다음 질문으로 이동
-                            if (currentQuestionIndex < base_questions.size - 1) {
+                            if (currentQuestionIndex < baseQuestions.size - 1) {
                                 currentQuestionIndex++
-                                binding.tvQuestions.text = base_questions[currentQuestionIndex]
-                                binding.tilName.hint = base_hints[currentQuestionIndex]
+                                binding.tvQuestions.text = baseQuestions[currentQuestionIndex]
+                                binding.tilName.hint = baseHints[currentQuestionIndex]
                             } else {
                                 // 질문이 끝났을 경우
                                 val intent = Intent(this@MainActivity, QuestionsActivity::class.java)
