@@ -2,6 +2,18 @@
     <string name="app_name">내새꾸</string>
     <string name="default_web_client_id" translatable="false">875894780585-4sv7o6jdgjceto6kvp7t469bj5do68kp.apps.googleusercontent.com</string>
 
+    <!-- 질문 목록 -->
+    <string-array name="base_questions">
+        <item>사용자님의 이름을 입력해주세요.</item>
+        <item>세상에서 가장 이쁜 내새꾸의 이름은 무엇인가요?</item>
+    </string-array>
+
+    <!-- 힌트 목록 -->
+    <string-array name="base_hints">
+        <item>내새꾸에게 불리고 싶은 이름을 입력하세요.</item>
+        <item>내새꾸의 이름이 뭔가요?</item>
+    </string-array>
+
     <string name="select_answer_prompt">답변을 선택해주세요.</string>
 
     <!-- 반려동물 종류 질문 -->

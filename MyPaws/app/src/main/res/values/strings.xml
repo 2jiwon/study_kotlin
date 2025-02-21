@@ -2,6 +2,18 @@
     <string name="app_name">MyPaws</string>
     <string name="default_web_client_id" translatable="false">875894780585-4sv7o6jdgjceto6kvp7t469bj5do68kp.apps.googleusercontent.com</string>
 
+    <!-- 질문 목록 -->
+    <string-array name="base_questions">
+        <item>Please type your name.</item>
+        <item>Please type your pets name.</item>
+    </string-array>
+
+    <!-- 힌트 목록 -->
+    <string-array name="base_hints">
+        <item>What would you like your beloved pet to call you?</item>
+        <item>What name do you use to call your beloved pet?</item>
+    </string-array>
+
     <string name="select_answer_prompt">Please select an answer.</string>
 
     <!-- 반려동물 종류 질문 -->
