@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fancytank.mypaws.databinding.ActivityChatBinding
 
 class ChatActivity : AppCompatActivity() {
+    private val TAG = "CHAT ACTIVITY :: "
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChatAdapter
     private val messages = mutableListOf<ChatMessage>() // 메시지 리스트
@@ -38,14 +40,13 @@ class ChatActivity : AppCompatActivity() {
             addAIMessage(it)
         }
 
-        val message = binding.editMessage.text.toString()
         binding.btnSend.setOnClickListener {
+            val message = binding.editMessage.text.toString()
             Log.d("버튼 눌림?? ", message)
             if (message.isNotEmpty()) {
                 addUserMessage(message)
             }
         }
-
     }
 
     // 사용자 메시지 추가
