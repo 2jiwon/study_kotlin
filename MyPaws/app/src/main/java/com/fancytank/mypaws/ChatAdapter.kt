@@ -21,23 +21,18 @@ class ChatAdapter(private val messages: List<ChatMessage>) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val message = messages[position]
 
-        // RecyclerView의 LayoutParams를 먼저 사용
-        val params = holder.messageContainer.layoutParams as? RecyclerView.LayoutParams
-        if (params != null) {
-            // RecyclerView.LayoutParams에 대한 처리
-            val constraintParams = params as? ConstraintLayout.LayoutParams
-            if (constraintParams != null) {
-                // ConstraintLayout.LayoutParams로 변환 후 제약 수정
-                if (message.isUserMessage) {
-                    constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                    constraintParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    holder.messageContainer.layoutParams = constraintParams
-                } else {
-                    constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                    constraintParams.endToEnd = ConstraintLayout.LayoutParams.UNSET
-                    holder.messageContainer.layoutParams = constraintParams
-                }
+        val constraintParams = holder.messageContainer.layoutParams as? ConstraintLayout.LayoutParams
+        if (constraintParams != null) {
+
+            if (message.isUserMessage) {
+                constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                constraintParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+            } else {
+                constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                constraintParams.endToEnd = ConstraintLayout.LayoutParams.UNSET
             }
+
+            holder.messageContainer.layoutParams = constraintParams
         }
 
         holder.messageText.text = message.text
