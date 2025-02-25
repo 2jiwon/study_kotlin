@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity() {
 
                             user?.let { u ->
                                 pet?.let { p ->
-                                    val prompt = OpenAIClient().generatePrompt(u, p[0])
+                                    val prompt = OpenAIClient().createInitPrompt(p[0], u.nickname)
 
                                     OpenAIClient().generateResponse(
                                         prompt,

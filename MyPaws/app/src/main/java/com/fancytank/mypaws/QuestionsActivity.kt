@@ -5,11 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.fancytank.mypaws.QuestionData.petTypeQuestion
 import com.fancytank.mypaws.data.dao.PetDao
+import com.fancytank.mypaws.data.dao.UserDao
 import com.fancytank.mypaws.data.database.AppDatabase
 import com.fancytank.mypaws.data.entity.Pet
+import com.fancytank.mypaws.data.entity.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -20,6 +24,7 @@ class QuestionsActivity : AppCompatActivity() {
     private val openAIClient = OpenAIClient()
 
     private lateinit var petDao: PetDao
+    private lateinit var userDao: UserDao
 
     // MainActivity에서 사용자와 펫 정보 저장된 값 가져오기
     private var userName: String = Constants.answers.getOrNull(0) ?: ""
@@ -27,6 +32,7 @@ class QuestionsActivity : AppCompatActivity() {
 
     // 질문 리스트
     private val questionList = mutableListOf<Question>()
+    private var currentQuestion: Question? = null
     private var currentQuestionIndex = 0
 
     // View Binding
@@ -41,15 +47,22 @@ class QuestionsActivity : AppCompatActivity() {
         Log.d(TAG, "username :: $userName")
 
         petDao = AppDatabase.getInstance(this).petDao()
+        userDao = AppDatabase.getInstance(this).userDao()
 
         // 질문 초기화
         QuestionData.initialize(this)
+        val petTypeQuestion = QuestionData.petTypeQuestion
+        val dogBreedQuestion = QuestionData.dogBreedsQuestion
+        val catBreedQuestion = QuestionData.catBreedsQuestion
+
         // QuestionData에서 가져온 질문들 할당
         questionList.addAll(listOf(
-            QuestionData.petTypeQuestion,
-            QuestionData.dogBreedsQuestion,
-            QuestionData.catBreedsQuestion
+            petTypeQuestion,
+            dogBreedQuestion,
+            catBreedQuestion
         ))
+
+        currentQuestion = petTypeQuestion
 
         // 뷰 요소 연결
         tvQuestions = findViewById(R.id.tv_questions)
@@ -71,17 +84,18 @@ class QuestionsActivity : AppCompatActivity() {
             return
         }
 
-        val question = questionList[currentQuestionIndex]
-        tvQuestions.text = question.text
+        currentQuestion?.let { question ->
+            tvQuestions.text = question.text
 
-        // spinner 옵션 설정
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            listOf(getString(R.string.select_answer_prompt)) + question.options.map { it.text }
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerOptions.adapter = adapter
+            // spinner 옵션 설정
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                listOf(getString(R.string.select_answer_prompt)) + question.options.map { it.text }
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerOptions.adapter = adapter
+        }
     }
 
     fun handleAnswer() {
@@ -94,56 +108,56 @@ class QuestionsActivity : AppCompatActivity() {
             return
         }
 
-        // 다음 질문으로 넘어가기
-        val selectedOption = questionList[currentQuestionIndex].options[selectedIndex - 1]
-        Constants.answers.add(selectedOption.text) // 선택된 답변 저장
+        currentQuestion?.let { question ->
+            Constants.answers.add(question.options[selectedIndex - 1].text) // 선택된 답변 저장
 
-        currentQuestionIndex++
+            val selectedOption = currentQuestion?.options?.get(selectedIndex - 1)
 
-        if (currentQuestionIndex < questionList.size) {
-            showQuestion()
-        } else {
-            completeQuestions()
-        }
-    }
+            currentQuestion = selectedOption?.nextQuestion
 
-    private fun completeQuestions() {
-        val userId = UserPreferences.getUserId(this) ?: 0L
-        // 모든 질문 완료시 DB 저장
-        val pet = Pet(
-            userId = userId,
-            name = petName,
-            type= Constants.answers[1],
-            breed= Constants.answers[2],
-            bodyColor= Constants.answers[3],
-            eyeColor= Constants.answers[4])
-        CoroutineScope(Dispatchers.IO).launch {
-            petDao.insertPet(pet)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@QuestionsActivity, "펫 정보를 저장했습니다.", Toast.LENGTH_SHORT).show()
-                generateInitAIResponse(pet)
+            if (currentQuestion != null) {
+                showQuestion()
+            } else {
+                Toast.makeText(this, "모든 질문이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+
+                completeQuestions()
             }
         }
     }
 
-    fun createInitPrompt(pet: Pet): String {
-        val petType = pet.type
-        val breed = pet.breed
-        val bodyColor = pet.bodyColor
 
-        Log.d(TAG, "petname :: $petName")
-        Log.d(TAG, "petType :: $petType")
-        Log.d(TAG, "breed :: $breed")
-        Log.d(TAG, "bodyColor :: $bodyColor")
 
-        return """
-            You are a $bodyColor $breed $petType. Your name is $petName. Talk to me as $petType until I say exactly 'We should stop this game.', and call me as $userName.
-            Please mind that you are very beloved, friendly pet. 
-        """.trimIndent()
+    private fun completeQuestions() {
+        val userId = UserPreferences.getUserId(this) ?: 0L
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val user = userDao.getUserById(userId)
+
+            // 모든 질문 완료시 DB 저장
+            val pet = Pet(
+                userId = userId,
+                name = petName,
+                type= Constants.answers[2],
+                breed= Constants.answers[3],
+                bodyColor= Constants.answers[4],
+                eyeColor= Constants.answers[5])
+
+            CoroutineScope(Dispatchers.IO).launch {
+                petDao.insertPet(pet)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@QuestionsActivity, "펫 정보를 저장했습니다.", Toast.LENGTH_SHORT).show()
+                    if (user != null) {
+                        Toast.makeText(this@QuestionsActivity, user.toString(), Toast.LENGTH_SHORT).show()
+                        generateInitAIResponse(pet, userName)
+                    }
+                }
+            }
+        }
     }
 
-    fun generateInitAIResponse(pet: Pet) {
-        val prompt = createInitPrompt(pet)
+
+    fun generateInitAIResponse(pet: Pet, userName: String) {
+        val prompt = OpenAIClient().createInitPrompt(pet, userName)
 
         openAIClient.generateResponse(prompt,
             onSuccess = { response ->
