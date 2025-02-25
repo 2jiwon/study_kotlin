@@ -6,7 +6,7 @@ import com.fancytank.mypaws.data.entity.User
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUser(user: User)
+    fun insertUser(user: User) : Long
 
     @Update
     fun updateUser(user: User)
