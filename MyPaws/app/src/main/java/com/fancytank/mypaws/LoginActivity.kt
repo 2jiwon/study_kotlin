@@ -15,6 +15,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleLoginManager: GoogleSignInManager
+    private var userId : Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,13 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Log.d("LOGIN ACTIVITY 여기까지 실행됨?", "1")
+
+        userId = UserPreferences.getUserId(this)
+        if (userId != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         googleLoginManager = GoogleSignInManager
         binding.btnSignInGoogle.setOnClickListener {

@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     var user : User? = null
     var pet : List<Pet>? = null
+    var userId : Long? = null
+    var googleId : String? = null
 
     private var currentQuestionIndex = 0 // 현재 질문의 인덱스
 
@@ -43,19 +45,29 @@ class MainActivity : AppCompatActivity() {
         baseQuestions = resources.getStringArray(R.array.base_questions).toList()
         baseHints = resources.getStringArray(R.array.base_hints).toList()
 
-        // LoginActivity에서 전달받은 정보 가져오기
-        val googleId = intent.getStringExtra("GOOGLE_ID")
-        googleId?.let { Log.d(TAG, it) }
+        val USERID = UserPreferences.getUserId(this)
+        userId = USERID
+
 
         // 기존에 이미 사용자 정보가 있는지 확인
         GlobalScope.launch(Dispatchers.IO) {
             val userDao = AppDatabase.getInstance(this@MainActivity).userDao()
-            googleId?.let { user = userDao.getUserByEmail(it) }
+            if (userId == null) {
+                // LoginActivity에서 전달받은 정보 가져오기
+                googleId = intent.getStringExtra("GOOGLE_ID")
+                googleId?.let { Log.d(TAG, it) }
+
+                googleId?.let { user = userDao.getUserByEmail(it) }
+            } else {
+                user = userDao.getUserById(userId!!)
+            }
 
             Log.d(TAG, "user :: $user")
 
             if (user != null) {
                 user?.let { u ->
+                    userId = u.id
+                    UserPreferences.saveUserId(this@MainActivity, userId!!)
                     val petDao = AppDatabase.getInstance(this@MainActivity).petDao()
                     u.id.let { pet = petDao.getPetsByUserId(it) }
 
@@ -202,7 +214,8 @@ class MainActivity : AppCompatActivity() {
                     )
                     GlobalScope.launch(Dispatchers.IO) {
                         val userDao = AppDatabase.getInstance(this@MainActivity).userDao()
-                        userDao.insertUser(userInfo)
+                        val userId = userDao.insertUser(userInfo)
+                        UserPreferences.saveUserId(this@MainActivity, userId)
                     }
 
                     // 숨겼던 UI 복원
