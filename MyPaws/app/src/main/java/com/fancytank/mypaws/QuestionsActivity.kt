@@ -5,17 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.fancytank.mypaws.QuestionData.petTypeQuestion
 import com.fancytank.mypaws.data.dao.PetDao
 import com.fancytank.mypaws.data.dao.UserDao
 import com.fancytank.mypaws.data.database.AppDatabase
 import com.fancytank.mypaws.data.entity.Pet
-import com.fancytank.mypaws.data.entity.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class QuestionsActivity : AppCompatActivity() {
 
@@ -43,6 +37,8 @@ class QuestionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_questions)
+
+        Log.d(TAG, "이게 다시 실행되나요??")
 
         Log.d(TAG, "username :: $userName")
 
@@ -148,32 +144,19 @@ class QuestionsActivity : AppCompatActivity() {
                     Toast.makeText(this@QuestionsActivity, "펫 정보를 저장했습니다.", Toast.LENGTH_SHORT).show()
                     if (user != null) {
                         Toast.makeText(this@QuestionsActivity, user.toString(), Toast.LENGTH_SHORT).show()
-                        generateInitAIResponse(pet, userName)
+                        moveToChatRoom(pet, userName)
                     }
                 }
             }
         }
     }
 
+    fun moveToChatRoom(pet: Pet, userName: String) {
+        val prompt = openAIClient.createInitPrompt(pet, userName)
 
-    fun generateInitAIResponse(pet: Pet, userName: String) {
-        val prompt = OpenAIClient().createInitPrompt(pet, userName)
-
-        openAIClient.generateResponse(prompt,
-            onSuccess = { response ->
-                runOnUiThread {
-                    // ChatActivity 이동
-                    val intent = Intent(this, ChatActivity::class.java)
-                    intent.putExtra("AI_RESPONSE", response)
-                    startActivity(intent)
-                }
-            },
-            onError = { error ->
-                runOnUiThread {
-                    Toast.makeText(this, error, Toast.LENGTH_LONG).show()
-                    Log.d("Error :", error)
-                }
-            }
-        )
+        // ChatActivity 이동
+        val intent = Intent(this, ChatActivity::class.java)
+        intent.putExtra("INIT_PROMPT", prompt)
+        startActivity(intent)
     }
 }

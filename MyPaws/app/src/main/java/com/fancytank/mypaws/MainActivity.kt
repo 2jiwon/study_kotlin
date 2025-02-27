@@ -172,23 +172,10 @@ class MainActivity : AppCompatActivity() {
                                 pet?.let { p ->
                                     val prompt = OpenAIClient().createInitPrompt(p[0], u.nickname)
 
-                                    OpenAIClient().generateResponse(
-                                        prompt,
-                                        onSuccess = { response ->
-                                            runOnUiThread {
-                                                // 결과를 화면에 표시
-                                                val intent = Intent(this@MainActivity, ChatActivity::class.java)
-                                                intent.putExtra("AI_RESPONSE", response)
-                                                startActivity(intent)
-                                            }
-                                        },
-                                        onError = { error ->
-                                            runOnUiThread {
-                                                Toast.makeText(this@MainActivity, error, Toast.LENGTH_LONG).show()
-                                                Log.d("Error :", error)
-                                            }
-                                        }
-                                    )
+                                    // ChatActivity 이동
+                                    val intent = Intent(this@MainActivity, ChatActivity::class.java)
+                                    intent.putExtra("INIT_PROMPT", prompt)
+                                    startActivity(intent)
                                 }
                             }
                         }

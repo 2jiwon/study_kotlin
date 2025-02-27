@@ -1,8 +1,8 @@
 package com.fancytank.mypaws
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.fancytank.mypaws.data.entity.Pet
-import com.fancytank.mypaws.data.entity.User
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -33,18 +33,35 @@ class OpenAIClient {
         """.trimIndent()
     }
 
-    fun generateResponse(prompt: String, onSuccess: (String) -> Unit, onError: (String) -> Unit) {
+    fun generateResponse(prompt: String, chatHistory: List<ChatMessage>, isInit: Boolean, onSuccess: (String) -> Unit, onError: (String) -> Unit) {
         val mediaType = "application/json".toMediaType()
+
         val json = JSONObject()
         json.put("model", "gpt-4o-mini")
-        json.put("messages", JSONArray().put(JSONObject().apply {
-            put("role", "system")
-            put("content", JSONArray().put(JSONObject().apply {
-                put("type", "text")
-                put("text", prompt)
-            }))
-        }))
-//      json.put("response_format", mapOf("type" to "text"))
+
+        val messageArray = JSONArray()
+
+        // 초기 프롬프트인지
+        if (isInit) {
+            messageArray.put(JSONObject().apply {
+                put("role", "system")
+                put("content", prompt)
+            })
+        } else {
+            for (message in chatHistory) {
+                messageArray.put(JSONObject().apply {
+                    put("role", if (message.isUserMessage) "user" else "assistant")
+                    put("content", message.text)
+                })
+            }
+
+            messageArray.put(JSONObject().apply {
+                put("role", "user")
+                put("content", prompt)
+            })
+        }
+
+        json.put("messages", messageArray)
 
         Log.d("body : ", json.toString())
 

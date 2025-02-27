@@ -5,12 +5,39 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class ChatAdapter(private val messages: List<ChatMessage>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter : ListAdapter<ChatMessage, ChatAdapter.ChatViewHolder>(ChatDiffCallback()) {
+
     class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val messageText: TextView = itemView.findViewById(R.id.messageText)
         val messageContainer: ConstraintLayout = itemView.findViewById(R.id.messageContainer)
+
+        fun bind(message: ChatMessage) {
+            if (message.isInitial) return
+            messageText.text = message.text
+
+            val constraintParams = messageContainer.layoutParams as? ConstraintLayout.LayoutParams
+            constraintParams?.let {
+                if (message.isUserMessage) {
+                    it.startToStart = ConstraintLayout.LayoutParams.UNSET
+                    it.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                } else {
+                    it.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                    it.endToEnd = ConstraintLayout.LayoutParams.UNSET
+                }
+                messageContainer.layoutParams = it
+            }
+
+            // 배경 설정
+            if (message.isUserMessage) {
+                messageText.setBackgroundResource(R.drawable.bg_user_message)
+            } else {
+                messageText.setBackgroundResource(R.drawable.bg_ai_message)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ChatViewHolder {
@@ -19,31 +46,17 @@ class ChatAdapter(private val messages: List<ChatMessage>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        val message = messages[position]
-
-        val constraintParams = holder.messageContainer.layoutParams as? ConstraintLayout.LayoutParams
-        if (constraintParams != null) {
-
-            if (message.isUserMessage) {
-                constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                constraintParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-            } else {
-                constraintParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                constraintParams.endToEnd = ConstraintLayout.LayoutParams.UNSET
-            }
-
-            holder.messageContainer.layoutParams = constraintParams
-        }
-
-        holder.messageText.text = message.text
-
-        // 배경 설정
-        if (message.isUserMessage) {
-            holder.messageText.setBackgroundResource(R.drawable.bg_user_message)
-        } else {
-            holder.messageText.setBackgroundResource(R.drawable.bg_ai_message)
-        }
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount() : Int = messages.size
+}
+
+class ChatDiffCallback : DiffUtil.ItemCallback<ChatMessage>() {
+    override fun areItemsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
+        return oldItem === newItem // 객체 비교
+    }
+
+    override fun areContentsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
+        return oldItem == newItem // 데이터 비교
+    }
 }
