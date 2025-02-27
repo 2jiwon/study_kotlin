@@ -1,11 +1,13 @@
 package com.fancytank.mypaws
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fancytank.mypaws.data.database.AppDatabase
@@ -241,6 +243,12 @@ class MainActivity : AppCompatActivity() {
                         if (input.isEmpty()) {
                             Toast.makeText(this@MainActivity, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
                         } else {
+                            // 키보드 내리기
+                            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(binding.etAnswers.windowToken, 0)
+
+
+
                             // 반가워요! 부분을 안보이게 하고
                             binding.tvWelcome.visibility = View.INVISIBLE
                             // 입력된 데이터 저장
