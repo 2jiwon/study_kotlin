@@ -18,9 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -33,7 +31,6 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : ComponentActivity() {
 
-    private lateinit var binding: ActivityLoginBinding
     private lateinit var googleLoginManager: GoogleSignInManager
     private var userId : Long? = null
 
@@ -42,12 +39,9 @@ class LoginActivity : ComponentActivity() {
 
         installSplashScreen()
 
-//        binding = ActivityLoginBinding.inflate(layoutInflater)
-    //        setContentView(binding.root)
+        Log.d("LOGIN ACTIVITY 여기까지 실행됨?", "1")
 
-            Log.d("LOGIN ACTIVITY 여기까지 실행됨?", "1")
-
-            userId = UserPreferences.getUserId(this)
+        userId = UserPreferences.getUserId(this)
         if (userId != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -55,13 +49,9 @@ class LoginActivity : ComponentActivity() {
         }
 
         googleLoginManager = GoogleSignInManager
-//        binding.btnSignInGoogle.setOnClickListener {
-//           signInWithGoogle(this)
-//        }
         setContent {
             LoginScreen { signInWithGoogle(this@LoginActivity) }
         }
-
     }
 
     private fun signInWithGoogle(context: Context) {
